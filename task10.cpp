@@ -4,6 +4,18 @@
 
 using namespace std;
 
+void sst(string st1, string st2);
+
+int main()
+{
+    string st1;
+    string st2;
+    printf("Enter the string: ");
+    getline(cin, st1);
+    sst(st1,st2);
+    return 0;
+}
+
 void sst(string st1, string st2)
 {
     for (int i = 0; i < st1.length(); i++)
@@ -23,12 +35,3 @@ void sst(string st1, string st2)
     cout <<"New string: "<<st2 << endl;
 }
 
-int main()
-{
-    string st1;
-    string st2;
-    printf("Enter the string: ");
-    getline(cin, st1);
-    sst(st1,st2);
-    return 0;
-}

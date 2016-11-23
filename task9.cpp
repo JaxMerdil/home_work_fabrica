@@ -3,6 +3,18 @@
 
 using namespace std;
 
+char* algOfCesar(char* st);
+
+int main()
+{
+char srt[24];
+cout << "Alphabet (abcdefgh123456-0), offset 5: ";
+cin >> srt;
+cout << "Result:";
+cout << algOfCesar(srt) << endl;
+return 0;
+}
+
 char* algOfCesar(char* st)
 {
 char* cipherT = "abcdefgh123456-0";
@@ -15,14 +27,4 @@ encrypt[i] = cipherT[5-(strlen(cipherT)-j)];
 else
 encrypt[i] = cipherT[j+5];
 return encrypt;
-}
-
-int main()
-{
-char srt[24];
-cout << "Alphabet (abcdefgh123456-0), offset 5: ";
-cin >> srt;
-cout << "Result:";
-cout << algOfCesar(srt) << endl;
-return 0;
 }

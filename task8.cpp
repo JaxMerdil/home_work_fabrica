@@ -8,7 +8,9 @@ struct map1
     char str;
     int N;
 } M[100];
+
 bool check(char let, int i);
+
 int main()
 {
     cout << "Enter the string:";

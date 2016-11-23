@@ -3,17 +3,8 @@
 using namespace std;
 
 
-void* cat(char *str1, const char *str2)
-{
-while(*str1) str1++;
-while(*str2)
-{
-*str1 = *str2;
-str1++;
-str2++;
-}
-*str1='\0';
-}
+void* cat(char *str1, const char *str2);
+
 int main()
 {
     char* str1, *str2;
@@ -28,4 +19,16 @@ int main()
     delete[]str1;
     delete[]str2;
     return 0;
+}
+
+void* cat(char *str1, const char *str2)
+{
+while(*str1) str1++;
+while(*str2)
+{
+*str1 = *str2;
+str1++;
+str2++;
+}
+*str1='\0';
 }

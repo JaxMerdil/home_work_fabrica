@@ -5,6 +5,17 @@ using namespace std;
 
 
 
+void delS1(string st);
+
+int main()
+{
+    string st1;
+    printf("Enter the string: ");
+    getline(cin, st1);
+    delS1(st1);
+    return 0;
+}
+
 void delS1(string st)
 {
     int i=0;
@@ -17,11 +28,3 @@ void delS1(string st)
     cout << st << endl;
 }
 
-int main()
-{
-    string st1;
-    printf("Enter the string: ");
-    getline(cin, st1);
-    delS1(st1);
-    return 0;
-}

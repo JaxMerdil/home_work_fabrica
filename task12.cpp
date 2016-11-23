@@ -1,5 +1,6 @@
 #include <iostream>
 #include <time.h>
+
 using namespace std;
 
 int* swap(int* array, int size);

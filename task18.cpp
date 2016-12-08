@@ -49,9 +49,10 @@ int main( )
     maxGpa(groupStud,n);
 
     int k=0;
-    Professors groupProf[k];
     cout<<"Введите количество профессоров: ";
     cin>>k;
+    Professors groupProf[k];
+    
 
     for(int i=0;i<k;i++)
     {

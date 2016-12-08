@@ -23,7 +23,7 @@ for(int i = 0; i<strlen(st); i++)
 for(int j = 0; j<strlen(cipherT); j++)
 if(st[i] == cipherT[j])
 if((strlen(cipherT)-j) <= 5)
-encrypt[i] = cipherT[5-(strlen(cipherT)-j)];
+encrypt[i] = cipherT[(j+5)%strlen(cipherT)];
 else
 encrypt[i] = cipherT[j+5];
 return encrypt;

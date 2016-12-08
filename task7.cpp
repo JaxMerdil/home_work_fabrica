@@ -18,11 +18,9 @@ int main()
     return 0;
 }
 
-void cat(char *str1, const char *str2)
-{
+void cat(char *str1, const char *str2){
 str1 += strlen(str1);
-while(*str2)
-{
+while(*str2){
 *str1 = *str2;
 str1++;
 str2++;

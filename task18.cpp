@@ -1,3 +1,4 @@
+//Ошибку с непонятками в выводе исправил, все ок
 #include <iostream>
 
 using namespace std;

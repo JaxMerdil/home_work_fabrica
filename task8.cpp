@@ -2,24 +2,25 @@
 #include <string>
 using namespace std;
 
-string s;
+
 struct map1
 {
     char str;
     int N;
 } M[100];
 
-bool check(char let, int i);
+bool checkQuantitySymbol(const string& s, int i);
 
 int main()
 {
+    string s;
     cout << "Enter the string:";
     getline(cin, s);
     int i = 0;
     ///////
     for (; i < s.size(); i++)
     {
-        if (check(s[i], i) == 0)
+        if (checkQuantitySymbol(s, i) == 0)
         {
             M[i].N = 1;
             M[i].str = s[i];
@@ -34,7 +35,7 @@ int main()
     }
 }
 
-bool check(char let, int i)
+bool checkQuantitySymbol(const string& s, int i)
 {
     for (int j = 0; j <= i; j++)
     {

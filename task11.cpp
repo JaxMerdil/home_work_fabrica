@@ -23,8 +23,14 @@ void delS1(string& str1)
     for(int i=0;i<str1.length();i++)
     {
         if (i == 0) continue;
-           if(str1[i] == ' ') {st2[j]=str1[i]; i++; j++;}
-             else {st2[j]=str1[i]; j++;}
+           if(str1[i] == ' ')
+           {
+		st2[j]=str1[i]; i++; j++;
+	   }
+           else
+	   {
+		  st2[j]=str1[i]; j++;
+	   }
     }
     printf(st2);
     cout<<endl;

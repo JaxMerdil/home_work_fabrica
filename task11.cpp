@@ -1,11 +1,11 @@
 #include <iostream>
+#include <cstring>
 #include <string>
+#include <stdio.h>
 
 using namespace std;
 
-
-
-void delS1(string st);
+void delS1(string& st);
 
 int main()
 {
@@ -16,15 +16,16 @@ int main()
     return 0;
 }
 
-void delS1(string st)
+void delS1(string& str1)
 {
-    int i=0;
-    while (i != st.length())
+    int j=0;
+    char st2[str1.length()];
+    for(int i=0;i<str1.length();i++)
     {
-        if ((i == 0) || (st[i - 1] == ' '))
-        st.erase(i, 1);
-        i++;
+        if (i == 0) continue;
+           if(str1[i] == ' ') {st2[j]=str1[i]; i++; j++;}
+             else {st2[j]=str1[i]; j++;}
     }
-    cout << st << endl;
+    printf(st2);
+    cout<<endl;
 }
-

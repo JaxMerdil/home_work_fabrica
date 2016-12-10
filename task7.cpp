@@ -1,11 +1,11 @@
-#include <iostream>
+﻿#include <iostream>
 #include <stdio.h>
 #include <cstring>
 
 using namespace std;
 
 
-void fooCat(char *str1, const char *str2);
+void concatenation(char *str1, const char *str2);
 
 int main()
 {
@@ -16,14 +16,14 @@ int main()
     gets(str1);
     cout<<"Введите вторую строку: ";
     gets(str2);
-    fooCat(str1, str2);
+    concatenation(str1, str2);
     printf(str1);
     delete[]str1;
     delete[]str2;
     return 0;
 }
 
-void fooCat(char *str1, const char *str2){
+void concatenation(char *str1, const char *str2){
 str1 += strlen(str1);
 while(*str2){
 *str1 = *str2;

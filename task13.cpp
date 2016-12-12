@@ -5,9 +5,9 @@
 
 using namespace std;
 
-int *array(int *ar, int &size);
-void printArr(int* ar,int& size);
-int *randSornArray(int *ar,int& size);
+int *array(int *ar,const int size);
+void printArr(int* ar,const int size);
+int *randSornArray(int *ar,const int size);
 
 
 int main()
@@ -28,7 +28,7 @@ int main()
 
 
 
-int *array(int *ar,int& size)
+int *array(int *ar,const int size)
 {
     int pSp=1;
     for(int i=0; i<size; i++)
@@ -39,14 +39,14 @@ int *array(int *ar,int& size)
     return ar;
 }
 
-void printArr(int* ar,int& size)
+void printArr(int* ar,const int size)
 {
     for(int i=0; i<size; i++)
         cout<<ar[i]<<" ";
     cout<<endl;
 }
 
-int* randSornArray(int *ar,int& size)
+int* randSornArray(int *ar,const int size)
 {
     int temp,j;
     srand(time(NULL));

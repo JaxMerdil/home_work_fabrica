@@ -1,22 +1,21 @@
 #include <iostream>
 #include <cstring>
-#include <ctype.h>
 
 using namespace std;
 
-void upperFirstSymbol(const string& st1, string& st2);
+void UpperFirstSymbol(const string& str1, string& str2);
 
 int main()
 {
-    string st1;
-    string st2;
+    string str1;
+    string str2;
     printf("Enter the string: ");
-    getline(cin, st1);
-    upperFirstSymbol(st1,st2);
+    getline(cin, str1);
+    UpperFirstSymbol(str1,str2);
     return 0;
 }
 
-void upperFirstSymbol(const string& st1, string& st2)
+void UpperFirstSymbol(const string& st1, string& st2)
 {
     int i=0;
     st2=st1;
@@ -28,5 +27,3 @@ void upperFirstSymbol(const string& st1, string& st2)
     cout << st1 << endl;
     cout <<"New string: "<<st2 << endl;
 }
-
-

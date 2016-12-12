@@ -1,17 +1,18 @@
 #include <iostream>
-#include <time.h>
+#include <ctime>
 
 using namespace std;
 
-void passGen(void);
+void PassGen(void);
 
 int main()
 {
-    passGen();
+    cout<<"Password of 8 symbol: ";
+    PassGen();
     return 0;
 }
 
-void passGen(void)
+void PassGen(void)
 {
     srand(time(NULL));
     char str[8];
@@ -19,8 +20,12 @@ void passGen(void)
     for(int i=0;i<8;i++)
     {
         k=rand()%74+48;
-        if((k>=58&&k<=64)||(k>=91&&k<=94)||(k==96)) {i--; continue;}
-            else str[i]=k;
+        if((k>=58&&k<=64)||(k>=91&&k<=94)||(k==96))
+        {
+            i--;
+            continue;
+        }
+        else str[i]=k;
         cout<<str[i];
     }
     cout<<endl;

@@ -18,7 +18,7 @@ void DeleteFirstWordSymbols(const string& str1)
 {
     int j=0;
     char st2[str1.length()];
-    for(int i=1;i<str1.length();i++)
+    for(int i=1; i < str1.length(); i++)
     {
         st2[j]=str1[i];
         j++;

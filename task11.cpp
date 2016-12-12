@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void DeleteFirstWordSymbols(string& st);
+void DeleteFirstWordSymbols(const string& st);
 
 int main()
 {
@@ -14,7 +14,7 @@ int main()
     return 0;
 }
 
-void DeleteFirstWordSymbols(string& str1)
+void DeleteFirstWordSymbols(const string& str1)
 {
     int j=0;
     char st2[str1.length()];

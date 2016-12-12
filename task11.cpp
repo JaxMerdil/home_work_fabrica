@@ -20,17 +20,13 @@ void DeleteFirstWordSymbols(const string& str1)
     char st2[str1.length()];
     for(int i=1;i<str1.length();i++)
     {
+        st2[j]=str1[i];
+        j++;
+
         if(str1[i] == ' ')
         {
-            st2[j]=str1[i];
             i++;
-            j++;
         }
-          else
-          {
-            st2[j]=str1[i];
-            j++;
-          }
     }
     printf(st2);
     cout<<endl;

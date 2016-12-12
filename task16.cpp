@@ -1,71 +1,82 @@
 #include <iostream>
-#include <time.h>
+#include <ctime>
 #include <iomanip>
 
 using namespace std;
 
-void allocMemory(int m, int n, double **&matrix);
-void fillRandomMatrix(int m, int n, double **matrix);
-void outputMatrix(int m, int n, double **matrix);
-void freeMemory(int m, double **matrix);
-double detOTmatr(double** matrix);
+void MemoryAllocation(double **&matrix, const int m, const int n); //Выделение памяти
+void FillRandomMatrix(double **matrix, const int m, const int n); //Заполнение матрицы случайными числами
+void OutputMatrix(double **matrix, const int m, const int n); //Вывод матрицы
+void FreeMemory(double **matrix, const int m); //Освободить память
+double DeterminantMatrix(double** matrix);
 
 int main()
 {
     srand(time(NULL));
     double **matrix;
     matrix = 0;
-    allocMemory(3, 3, matrix);
-    fillRandomMatrix(3, 3, matrix);
+    MemoryAllocation(matrix, 3, 3);
+    FillRandomMatrix(matrix, 3, 3);
     cout<<"Matr:"<<endl;
-    outputMatrix(3, 3, matrix);
-    cout << "Determinant="<<detOTmatr(matrix) << endl;
-    freeMemory(3,matrix);
+    OutputMatrix(matrix, 3, 3);
+    cout << "Determinant="<<DeterminantMatrix(matrix) << endl;
+    FreeMemory(matrix, 3);
     return 0;
 }
-//определитель 3х3
-double detOTmatr(double** matrix)
+
+//------------------------------------------------------------------------------------------
+
+double DeterminantMatrix(double** matrix)
 {
-    double dOtM = matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0] + \
+    double detMatr = matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0] + \
             matrix[0][2] * matrix[1][0] * matrix[2][1] - matrix[0][2] * matrix[1][1] * matrix[2][0] - \
             matrix[0][1] * matrix[1][0] * matrix[2][2] - matrix[0][0] * matrix[1][2] * matrix[2][1];
-    return dOtM;
+    return detMatr;
 }
-//выделение памяти
-void allocMemory(int m, int n, double **&matrix)
+
+//------------------------------------------------------------------------------------------
+
+void MemoryAllocation(double **&matrix, const int m, const int n) //Выделение памяти
 {
-int i;
-matrix = new double*[m];
-for (i = 0; i < m; i++) {
-matrix[i] = new double[n];
+    int i;
+    matrix = new double*[m];
+    for (i = 0; i < m; i++)
+    {
+        matrix[i] = new double[n];
+    }
 }
-}
-//Заполнение матрицы случайными числами
-void fillRandomMatrix(int m, int n, double **matrix)
+
+void FillRandomMatrix(double **matrix, const int m, const int n) //Заполнение матрицы случайными числами
 {
-for (int i = 0; i < m; i++) {
-for (int j = 0; j < n; j++) {
-matrix[i][j] = rand() % 10;
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            matrix[i][j] = rand() % 10;
+        }
+    }
 }
-}
-}
-//Вывод матрицы
-void outputMatrix(int m, int n, double **matrix)
+
+//------------------------------------------------------------------------------------------
+
+void OutputMatrix(double **matrix, const int m, const int n) //Вывод матрицы
 {
-for (int i = 0; i < m; i++)
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout<< setw(6)<< matrix[i][j] << ' ';
+        }
+        cout << '\n';
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+void FreeMemory(double **matrix, const int m) //Освобождение памяти
 {
-for (int j = 0; j < n; j++)
-{
-cout<< setw(6)<< matrix[i][j] << ' ';
-}
-cout << '\n';
-}
-}
-//Освобождение памяти
-void freeMemory(int m, double **matrix)
-{
-for (int i = 0; i < m; i++) {
-delete[] matrix[i];
-}
-delete[] matrix;
+    for (int i = 0; i < m; i++) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
 }

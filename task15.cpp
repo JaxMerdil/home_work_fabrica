@@ -60,15 +60,18 @@ void MemoryAllocation(int **&matrix, const int m, const int n) //Выделен�
 {
     int i;
     matrix = new int*[m];
-    for (i = 0; i < m; i++) {
+    for (i = 0; i < m; i++)
+    {
         matrix[i] = new int[n];
     }
 }
 
 void FillRandomMatrix(int **matrix, const int m, const int n) //Заполнение матрицы случайными числами
 {
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
             matrix[i][j] = rand() % 10;
         }
     }

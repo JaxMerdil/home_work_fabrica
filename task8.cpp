@@ -3,45 +3,45 @@
 
 using namespace std;
 
-struct map1
+struct map
 {
-    char str;
-    int N;
-} M[100];
+    char symbol;
+    int nSymRep; // N symbol repeat
+} ArCharRep[256]; //Array of characters repeat
 
-bool checkQuantitySymbol(const string& s, int i);
+bool CheckQuantitySymbol(const string& s,const int i);
 
 int main()
 {
-    string s;
+    string str;
     cout << "Enter the string:";
-    getline(cin, s);
+    getline(cin, str);
     int i = 0;
-    ///////
-    for (; i < s.size(); i++)
+
+    for (i=0; i < str.size(); i++)
     {
-        if (checkQuantitySymbol(s, i) == 0)
+        if (CheckQuantitySymbol(str, i) == 0)
         {
-            M[i].N = 1;
-            M[i].str = s[i];
+            ArCharRep[i].nSymRep = 1;
+            ArCharRep[i].symbol = str[i];
         }
     }
     cout << "Number of symbol repeats:" << endl;
-    ///////
+
     for (int j = 0; j <= i; j++)
     {
-        if (M[j].N != 0)
-            cout << M[j].str << " = " << M[j].N << endl;
+        if (ArCharRep[j].nSymRep != 0)
+            cout << ArCharRep[j].symbol << " = " << ArCharRep[j].nSymRep << endl;
     }
 }
 
-bool checkQuantitySymbol(const string& s, int i)
+bool CheckQuantitySymbol(const string& s,const int i)
 {
     for (int j = 0; j <= i; j++)
     {
-        if (s[i] == M[j].str)
+        if (s[i] == ArCharRep[j].symbol)
         {
-            M[j].N++;
+            ArCharRep[j].nSymRep++;
             return 1;
         }
     }

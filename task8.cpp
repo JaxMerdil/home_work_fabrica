@@ -18,7 +18,7 @@ int main()
     cout << "Enter the string:";
     getline(cin, str);
     int i = 0;
-
+    
     for (i=0; i < str.size(); i++)
     {
         if (CheckQuantitySymbol(str,arCharRep,i) == 0)
@@ -28,7 +28,7 @@ int main()
         }
     }
     cout << "Number of symbol repeats:" << endl;
-
+    
     for (int j = 0; j <= i; j++)
     {
         if (arCharRep[j].nSymRep != 0)
@@ -48,4 +48,5 @@ bool CheckQuantitySymbol(const string& s,Map* arCharRep, const int i)
     }
     return 0;
 }
+
 

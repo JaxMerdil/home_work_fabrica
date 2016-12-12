@@ -1,4 +1,3 @@
-//Ошибку с непонятками в выводе исправил, все ок 
 #include <iostream>
 
 using namespace std;
@@ -6,168 +5,188 @@ using namespace std;
 
 //**************Структуры****************//
 struct Professors;
-struct student{
+struct student
+{
     char name[20]; //имя
     unsigned short age; //возраст
-    float gpa; //ср.бал
+    unsigned int gpa; //ср.бал
     Professors* supervisor;//научный руководитель
 };
 
-struct Professors{
+struct Professors
+{
     char name[20]; //имя
     unsigned short age; //возраст
     unsigned int salary; //зарплата
 };
 
 //**************Прототипы****************//
-void inPutSt(student* s); //зап. для студ.
-void inPutPr(Professors* p); //зап. для проф.
-float sB(student* p, int m); //ср.бал
-void minGpa(student* p, int m);//мин.ср.бал
-void maxGpa(student* p, int m);//макс.ср.бал
-bool printStud(student* s,int m);//вывод инф. о студ.
-bool printProf(Professors* p,int m);//вывод инф. о студ.
-bool profFyeras(student* s, Professors* p,int m, int k);//
+void InputStudent(student* Stud); //зап. для студ.
+void InputProfessors(Professors* Prof); //зап. для проф.
+float GpaStudent(student* Stud, int m); //ср.бал
+void MinGpa(student* Stud, int m);//мин.ср.бал
+void MaxGpa(student* Stud, int m);//макс.ср.бал
+bool PrintStudent(student* Stud, int m);//вывод инф. о студ.
+bool PrintProfessors(Professors* Prof, int m);//вывод инф. о студ.
+bool ProfessorsOlder50(student* Stud, Professors* Prof, int m, int k);//
 
 int main( )
 
 {
-    int n=0;
-    cout<<"Введите количество студентов: ";
-    cin>>n;
-    student groupStud[n];
-    for(int i=0;i<n;i++)
+    int nStud=0;
+    cout << "Введите количество студентов: ";
+    cin >> nStud;
+    student groupStud[nStud];
+    for(int i = 0; i < nStud; i++)
     {
-        cout<<i+1<<"-й студент: ";
-        inPutSt(&groupStud[i]);
+        cout << i + 1 << "-й студент: ";
+        InputStudent(&groupStud[i]);
     }
-    printStud(groupStud,n);
-    cout<<endl;
-    cout<<"Средний бал: "<<sB(groupStud,n)<<endl;
-    cout<<endl;
-    minGpa(groupStud,n);
-    cout<<endl;
-    maxGpa(groupStud,n);
-
-    int k=0;
-    cout<<"Введите количество профессоров: ";
-    cin>>k;
-    Professors groupProf[k];
+    PrintStudent(groupStud, nStud);
+    cout << endl;
+    cout << "Средний бал: " << GpaStudent(groupStud, nStud) << endl;
+    cout << endl;
+    MinGpa(groupStud, nStud);
+    cout << endl;
+    MaxGpa(groupStud, nStud);
     
-
-    for(int i=0;i<k;i++)
+    int nProf = 0;
+    cout << "Введите количество профессоров: ";
+    cin >> nProf;
+    Professors groupProf[nProf];
+    
+    
+    for(int i = 0; i < nProf; i++)
     {
-        cout<<i+1<<"-й профессор: ";
-        inPutPr(&groupProf[i]);
+        cout << i + 1 << "-й профессор: ";
+        InputProfessors(&groupProf[i]);
     }
-    printProf(groupProf,k);
-    profFyeras(groupStud,groupProf,n,k);
-
-
+    PrintProfessors(groupProf, nProf);
+    ProfessorsOlder50(groupStud, groupProf, nStud, nProf);
+    
+    
     return 0;
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------
 
 //***************Функции****************//
-void inPutSt(student* s)
+void InputStudent(student* Stud)
 {
-    cout<<"Имя:";
+    cout << "Имя:";
     cin.get();
-    cin.getline((*s).name,20);
-    cout<<"Возраст:";
-    cin>>s->age;
-    cout<<"Средний бал: ";
-    cin>>s->gpa;
-    cout<<endl;
+    cin.getline((*Stud).name, 20);
+    cout << "Возраст:";
+    cin>>Stud->age;
+    cout << "Средний бал: ";
+    cin >> Stud->gpa;
+    cout << endl;
 }
-//****************************************//
-void inPutPr(Professors* p)
-{
-    cout<<"Имя:";
-    cin.get();
-    cin.getline((*p).name,20);
-    cout<<"Возраст:";
-    cin>>p->age;
-    cout<<"Зарплата: ";
-    cin>>p->salary;
-    cout<<endl;
-}
-//****************************************//
-float sB(student* p, int m)
-{
-    float sum=0;
-    for(int i=0;i<m;i++)
-    {
-        sum=sum+p[i].gpa;
-    }
-    return sum/m;
-}
-//****************************************//
-void minGpa(student* p, int m)
-{
-    float min=p[0].gpa;
-    int temp=0;
-    for(int i=0;i<m;i++)
-    {
-        if(min>p[i].gpa)
-        {
-        min=p[i].gpa;
-        temp=i;
-        }
-    }
-    cout<<"Студент с наименьшим средним балом балом:"<<p[temp].name<<" бал:"<<min<<endl;
-}
-//****************************************//
-void maxGpa(student* p, int m)
-{
-    float max=p[0].gpa;
-    int temp=0;
-    for(int i=0;i<m;i++)
-    {
 
-        if(max<p[i].gpa)
+//----------------------------------------------------------------------------------------------------------------------------------
+
+void InputProfessors(Professors* Prof)
+{
+    cout << "Имя:";
+    cin.get();
+    cin.getline((*Prof).name, 20);
+    cout << "Возраст:";
+    cin >> Prof->age;
+    cout << "Зарплата: ";
+    cin >> Prof->salary;
+    cout << endl;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+float GpaStudent(student* Stud, int m)
+{
+    float sum = 0;
+    for(int i = 0; i < m; i++)
+    {
+        sum = sum + Stud[i].gpa;
+    }
+    return sum / m;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+void MinGpa(student* Stud, int m)
+{
+    float min = Stud[0].gpa;
+    int temp = 0;
+    for(int i = 0; i < m; i++)
+    {
+        if(min > Stud[i].gpa)
         {
-        max=p[i].gpa;
-        temp=i;
+            min = Stud[i].gpa;
+            temp = i;
         }
     }
-    cout<<"Студент с наибольшим средним балом балом:"<<p[temp].name<<" бал:"<<max<<endl;
+    cout << "Студент с наименьшим средним балом балом: " << Stud[temp].name << " бал: " << min << endl;
 }
-//****************************************//
-bool printStud(student* s,int m)
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+void MaxGpa(student* Stud, int m)
 {
-    for(int i=0;i<m;i++)
+    float max = Stud[0].gpa;
+    int temp = 0;
+    for(int i = 0 ; i < m; i++)
     {
-        cout<<"Студент "<<s[i].name<<", возраст "<<s[i].age<<"лет, средний бал "<<s[i].gpa<<endl;
+        
+        if(max < Stud[i].gpa)
+        {
+            max = Stud[i].gpa;
+            temp = i;
+        }
+    }
+    cout << "Студент с наибольшим средним балом балом: " << Stud[temp].name << " бал:" << max << endl;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+bool PrintStudent(student* Stud, int m)
+{
+    for(int i = 0 ; i < m; i++)
+    {
+        cout << "Студент " << Stud[i].name << ", возраст " << Stud[i].age << "лет, средний бал " << Stud[i].gpa << endl;
     }
     return 1;
 }
-//****************************************//
-bool printProf(Professors* p, int m)
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+bool PrintProfessors(Professors* Prof, int m)
 {
-    for(int i=0;i<m;i++)
+    for(int i = 0; i < m; i++)
     {
-        cout<<"Профессор "<<p[i].name<<", возраст "<<p[i].age<<"лет, зарплата "<<p[i].salary<<endl;
+        cout << "Профессор " << Prof[i].name << ", возраст " << Prof[i].age << "лет, зарплата " << Prof[i].salary << endl;
     }
     return 1;
 }
-bool profFyeras(student* s, Professors* p,int m, int k)
+
+//----------------------------------------------------------------------------------------------------------------------------------
+
+bool ProfessorsOlder50(student* Stud, Professors* Prof, int m, int k)
 {
-    for(int i = 0 ; i < m ;i++)
-        {
-            int NstudProf;
-            cout<<"Введите номер научного руководителя для студента "<<s[i].name;
-            cin >> NstudProf;
-            if(0 < NstudProf &&  NstudProf < k+1)
-                s[i].supervisor = &p[NstudProf-1];
-            else
-                cout << "Проффесор под № " << NstudProf << " не существует.";
-        }
-    cout<<"Список студентов у которых научный руководитель старше 50 лет:"<<endl;
-    for(int i = 0 ; i < m ;i++)
-        {
-            if(s[i].supervisor->age > 50)
-            printf("Студент %s — научный руководитель: %s возраст научного руководителя %d \n",s[i].name,s[i].supervisor->name,s[i].supervisor->age);
-        }
-return 1;
+    for(int i = 0; i < m; i++)
+    {
+        int nStudProf;
+        cout << "Введите номер научного руководителя для студента " << Stud[i].name << ": ";
+        cin >> nStudProf;
+        if(0 < nStudProf &&  nStudProf < k + 1)
+            Stud[i].supervisor = &Prof[nStudProf - 1];
+        else
+            cout << "Проффесор под № " << nStudProf << " не существует.";
+    }
+    cout << "Список студентов у которых научный руководитель старше 50 лет:" << endl;
+    for(int i = 0; i < m; i++)
+    {
+        if(Stud[i].supervisor->age > 50)
+            printf("Студент %s — научный руководитель: %s возраст научного руководителя %d \n", Stud[i].name, Stud[i].supervisor->name, Stud[i].supervisor->age);
+    }
+    return 1;
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------

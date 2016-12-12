@@ -3,18 +3,18 @@
 
 using namespace std;
 
-void DelFSymAftSp(string& st); //Delete first symbol after the space
+void DeleteFirstWordSymbols(string& st);
 
 int main()
 {
     string st1;
     printf("Enter the string: ");
     getline(cin, st1);
-    DelFSymAftSp(st1);
+    DeleteFirstWordSymbols(st1);
     return 0;
 }
 
-void DelFSymAftSp(string& str1)
+void DeleteFirstWordSymbols(string& str1)
 {
     int j=0;
     char st2[str1.length()];

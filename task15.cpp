@@ -1,97 +1,99 @@
 #include <iostream>
-#include <time.h>
-#include <math.h>
+#include <ctime>
 #include <iomanip>
 
 using namespace std;
 
-//Выделение памяти
-void allocMemory(int m, int n, int **&matrix);
-//Заполнение матрицы случайными числами
-void fillRandomMatrix(int m, int n, int **matrix);
-//Разворот матрици
-void matr90s(int m, int n, int **matrix);
-//Вывод матрицы
-void outputMatrix(int m, int n, int **matrix);
-//Освободить память
-void freeMemory(int m,int **matrix);
+void MemoryAllocation(int **&matrix, const int m, const int n); //Выделение памяти
+void FillRandomMatrix(int **matrix, const int m, const int n); //Заполнение матрицы случайными числами
+void TurnMatrix90(int **matrix, const int m, const int n); //Разворот матрици
+void OutputMatrix(int **matrix, const int m, const int n); //Вывод матрицы
+void FreeMemory(int **matrix, const int m); //Освободить память
 
 int main()
 {
-srand(time(NULL));
-int m, n;
-int **matrix;
-matrix = 0;
-cout<<"Введите количество строк: ";
-cin>>m;
-cout<<"Введите количество столбцов: ";
-cin>>n;
-allocMemory(m, n, matrix);
-fillRandomMatrix(m, n, matrix);
-cout<<"Matr №1"<<endl;
-outputMatrix(m, n, matrix);
-cout<<"***************************************************"<<endl;
-cout<<"Matr №2"<<endl;
-matr90s(m,n,matrix);
-freeMemory(m, matrix);
-
-return 0;
+    srand(time(NULL));
+    int nRaws, nCols;
+    int **matrix;
+    matrix = 0;
+    cout<<"Введите количество строк: ";
+    cin>>nRaws;
+    cout<<"Введите количество столбцов: ";
+    cin>>nCols;
+    MemoryAllocation(matrix, nRaws, nCols);
+    FillRandomMatrix(matrix, nRaws, nCols);
+    cout<<"Matr №1:"<<endl;
+    OutputMatrix(matrix, nRaws, nCols);
+    cout<<"******************************************"<<endl;
+    cout<<"Matr №2:"<<endl;
+    TurnMatrix90(matrix, nRaws, nCols);
+    FreeMemory(matrix, nRaws);
+    return 0;
 }
-void matr90s(int m, int n, int **matrix)
+
+//------------------------------------------------------------------------------------------
+
+void TurnMatrix90(int **matrix, const int m, const int n) //Переворот матрици на 90градусов
 {
     int matrix2[n][m];
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            matrix2[j][m-1-i]=matrix[i][j];
+            matrix2[j][m - 1 - i]=matrix[i][j];
         }
     }
-    //outputMatrix
+    //OutputMatrix2
     for (int i = 0; i < n; i++)
     {
-    for (int j = 0; j < m; j++)
+        for (int j = 0; j < m; j++)
+        {
+            cout<<setw(6)<< matrix2[i][j] << ' ';
+        }
+        cout << '\n';
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+void MemoryAllocation(int **&matrix, const int m, const int n) //Выделение памяти
+{
+    int i;
+    matrix = new int*[m];
+    for (i = 0; i < m; i++) {
+        matrix[i] = new int[n];
+    }
+}
+
+void FillRandomMatrix(int **matrix, const int m, const int n) //Заполнение матрицы случайными числами
+{
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix[i][j] = rand() % 10;
+        }
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+void OutputMatrix(int **matrix, const int m, const int n) //Вывод матрицы
+{
+    for (int i = 0; i < m; i++)
     {
-    cout<< setw(6)<< matrix2[i][j] << ' ';
+        for (int j = 0; j < n; j++)
+        {
+            cout<< setw(6)<< matrix[i][j] << ' ';
+        }
+        cout << '\n';
     }
-    cout << '\n';
+}
+
+//------------------------------------------------------------------------------------------
+
+void FreeMemory(int **matrix, const int m) //Освобождение памяти
+{
+    for (int i = 0; i < m; i++) {
+        delete[] matrix[i];
     }
-}
-//Выделение памяти
-void allocMemory(int m, int n, int **&matrix)
-{
-int i;
-matrix = new int*[m];
-for (i = 0; i < m; i++) {
-matrix[i] = new int[n];
-}
-}
-//Заполнение матрицы случайными числами
-void fillRandomMatrix(int m, int n, int **matrix)
-{
-for (int i = 0; i < m; i++) {
-for (int j = 0; j < n; j++) {
-matrix[i][j] = rand() % 10;
-}
-}
-}
-//Вывод матрицы
-void outputMatrix(int m, int n, int **matrix)
-{
-for (int i = 0; i < m; i++)
-{
-for (int j = 0; j < n; j++)
-{
-cout<< setw(6)<< matrix[i][j] << ' ';
-}
-cout << '\n';
-}
-}
-//Освобождение памяти
-void freeMemory(int m, int **matrix)
-{
-for (int i = 0; i < m; i++) {
-delete[] matrix[i];
-}
-delete[] matrix;
+    delete[] matrix;
 }

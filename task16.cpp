@@ -12,15 +12,16 @@ double DeterminantMatrix(double** matrix);
 
 int main()
 {
+    const int size=3;
     srand(time(NULL));
     double **matrix;
     matrix = 0;
-    MemoryAllocation(matrix, 3, 3);
-    FillRandomMatrix(matrix, 3, 3);
+    MemoryAllocation(matrix, size, size);
+    FillRandomMatrix(matrix, size, size);
     cout<<"Matr:"<<endl;
-    OutputMatrix(matrix, 3, 3);
+    OutputMatrix(matrix, size, size);
     cout << "Determinant="<<DeterminantMatrix(matrix) << endl;
-    FreeMemory(matrix, 3);
+    FreeMemory(matrix, size);
     return 0;
 }
 

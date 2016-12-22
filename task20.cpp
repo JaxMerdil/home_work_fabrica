@@ -9,21 +9,19 @@ struct Shape
 {
     float m_x;
     float m_y;
-    Shape()  :m_x(0),m_y(0)      //Конструктор по умолчанию
+    Shape()  :m_x(0), m_y(0)
     {
-        cout<<"Вызов конструктора по умолчанию базового класса"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
-    Shape(float x, float y) // Конструктор класса с параметрами
+    Shape(int x, int y):m_x(x),m_y(y)
     {
-        m_x=x;
-        m_y=y;
-        cout<<"Вызов параметризированого конструктора базового класса"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     virtual ~Shape() // Деструктор
     {
-        cout << "Вызов деструктора Shape" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
-    virtual float Square()=0; // Ф-я выч. площади фигуры
+    virtual float Square()=0;
 };
 
 //---------------------------------------------------------------------------------
@@ -32,15 +30,13 @@ struct Rectangle: Shape
 {
     float m_width;
     float m_height;
-    Rectangle(int x, int y, float w, float h) : Shape(x, y)
+    Rectangle(int x, int y, float w, float h) : Shape(x, y), m_width(w), m_height(h)
     {
-        m_width = w;
-        m_height = h;
-        cout<<"Вызов параметризированого конструктора класса Rectangle"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
-    ~Rectangle() // Деструктор
+    ~Rectangle()
     {
-        cout << "Вызов деструктора Rectangle" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     float Square() override
     {
@@ -54,15 +50,13 @@ struct Triangle: Shape
 {
     float m_cathetusA;
     float m_cathetusB;
-    Triangle(int x, int y, float cA, float cB) : Shape(x, y)
+    Triangle(int x, int y, float cA, float cB) : Shape(x, y), m_cathetusA(cA), m_cathetusB(cB)
     {
-        m_cathetusA = cA;
-        m_cathetusB = cB;
-        cout<<"Вызов параметризированого конструктора класса Triangle"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
-    ~Triangle() // Деструктор
+    ~Triangle()
     {
-        cout << "Вызов деструктора Triangle" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     float Square() override
     {
@@ -75,14 +69,13 @@ struct Triangle: Shape
 struct Circle: Shape
 {
     float m_radius;
-   Circle(int x, int y, int r) : Shape(x, y)
+   Circle(int x, int y, int r) : Shape(x, y), m_radius(r)
     {
-        m_radius=r;
-        cout<<"Вызов параметризированого конструктора класса Circle"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
-    ~Circle() // Деструктор
+    ~Circle()
     {
-        cout << "Вызов деструктора Rectangle" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     float Square() override
     {
@@ -117,5 +110,3 @@ int main()
     PrintSquerOfShape(squareFigures,nFigure);
     return 0;
 }
-
-

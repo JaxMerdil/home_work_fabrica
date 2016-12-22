@@ -1,19 +1,23 @@
 #include <iostream>
 #include <iomanip>
 
+typedef int(*MapFunc)(int);
+typedef int(*FilterFunc)(int);
+typedef int(*ReduceFupc)(int, int);
+
 using namespace std;
 
 //-------------------------------------------------------------------
 
-int SquaringSymbolArr(int arr);
-bool MultipleTwo(int arr);
+int SquareNum(int value);
+int MultipleTwo(int arr);
 int MultiplicationTwoArr(int arrA, int arrB);
 
 //-------------------------------------------------------------------
 
-int *Map(int *arr, const int size, int (*arr_p)(int));
-int *Filter(int x[], const int size, int& newSize, bool (*arrFilter)(int));
-int Redus(int* x, const int size, int (*arrRedus)(int, int));
+int *Map(int *arr, const int size, MapFunc mapper);
+int *Filter(int x[], const int size, int& newSize, FilterFunc arrFilter);
+int Reduce(int* x, const int size, ReduceFupc arrRedus);
 void FillingMatrix(int* arr,const int size);
 void PrintMatrix(int* arr, int size);
 
@@ -27,7 +31,7 @@ int main()
     cout << "Массив: "<<endl;
     FillingMatrix(matrix, size);
     PrintMatrix(matrix, size);
-    Map(matrix, size, SquaringSymbolArr);
+    Map(matrix, size, SquareNum);
     cout << "Изменение функцией Map (возведение в квадрат): "<<endl;
     PrintMatrix(matrix, size);
     int newSize;
@@ -35,26 +39,22 @@ int main()
     Filter(matrix, size, newSize, MultipleTwo);
     PrintMatrix(matrix, newSize);
     cout <<"Свертка массива функция Redus: ";
-    cout << Redus(matrix, newSize, MultiplicationTwoArr) << endl;
+    cout << Reduce(matrix, newSize, MultiplicationTwoArr) << endl;
     return 0;
 }
 
 //-------------------------------------------------------------------
 
-int SquaringSymbolArr(int arr)
+int SquareNum(int value)
 {
-    return arr*arr;
+    return value*value;
 }
 
 //-------------------------------------------------------------------
 
-bool MultipleTwo(int arr)
+int MultipleTwo(int arr)
 {
-    if(arr%2==0)
-    {
-        return 1;
-    }
-    return 0;
+    return arr%2==0;
 }
 
 //-------------------------------------------------------------------
@@ -66,42 +66,42 @@ int MultiplicationTwoArr(int arrA, int arrB)
 
 //-------------------------------------------------------------------
 
-int *Map(int* arr, const int size, int (*arr_p)(int))
+int *Map(int* arr, const int size, MapFunc mapper)
 {
     for(int i = 0; i < size; i++)
     {
-        arr[i]  = arr_p(arr[i]);
+        arr[i]  = mapper(arr[i]);
     }
     return arr;
 }
 
 //-------------------------------------------------------------------
 
-int *Filter(int arr[], const int size, int& newSize, bool (*arrFilter)(int))
+int *Filter(int arr[], const int size, int& newSize, FilterFunc arrFilter)
 {
     int j = 0;
     for(int i = 0; i < size; i++)
     {
         if( arrFilter(arr[i]))
-        {//filtering mas by user function
+        {
             arr[j] = arr[i];
             j++;
         }
     }
-    newSize = j;//new size mas
+    newSize = j;
     return arr;
 }
 
 //-------------------------------------------------------------------
 
-int Redus(int* arr, const int size, int (*arrRedus)(int, int))
+int Reduce(int* arr, const int size, ReduceFupc arrRedus)
 {
-    int Multiplication = 0;
+    int var = 0;
     for(int i = 0; i < size; i++)
     {
-      Multiplication = arrRedus(Multiplication,arr[i]);
+      var = arrRedus(var,arr[i]);
     }
-    return Multiplication;
+    return var;
 }
 
 //-------------------------------------------------------------------

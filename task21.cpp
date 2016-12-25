@@ -13,17 +13,15 @@ private:
 public:
     Shape()  :m_x(0),m_y(0)      //Конструктор по умолчанию
     {
-        cout<<"Вызов конструктора по умолчанию базового класса"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
-    Shape(float x, float y) // Конструктор класса с параметрами
+    Shape(float x, float y) :m_x(x),m_y(y)// Конструктор класса с параметрами
     {
-        m_x=x;
-        m_y=y;
-        cout<<"Вызов параметризированого конструктора базового класса"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     virtual ~Shape() // Деструктор
     {
-        cout << "Вызов деструктора Shape" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
 //    Функции доступа может когда то понадобятся
 //    float get_x()
@@ -53,15 +51,13 @@ private:
     float m_width;
     float m_height;
 public:
-    Rectangle(int x, int y, float w, float h) : Shape(x, y)
+    Rectangle(int x, int y, float w, float h) : Shape(x, y), m_width(w), m_height(h)
     {
-        m_width = w;
-        m_height = h;
-        cout<<"Вызов параметризированого конструктора класса Rectangle"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     ~Rectangle() // Деструктор
     {
-        cout << "Вызов деструктора Rectangle" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     float Square() override
     {
@@ -77,15 +73,13 @@ private:
     float m_cathetusA;
     float m_cathetusB;
 public:
-    Triangle(int x, int y, float cA, float cB) : Shape(x, y)
+    Triangle(int x, int y, float cA, float cB) : Shape(x, y), m_cathetusA(cA), m_cathetusB(cB)
     {
-        m_cathetusA = cA;
-        m_cathetusB = cB;
-        cout<<"Вызов параметризированого конструктора класса Triangle"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     ~Triangle() // Деструктор
     {
-        cout << "Вызов деструктора Triangle" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     float Square() override
     {
@@ -100,14 +94,13 @@ class Circle: public Shape
 private:
     float m_radius;
 public:
-   Circle(int x, int y, int r) : Shape(x, y)
+   Circle(int x, int y, int r) : Shape(x, y), m_radius(r)
     {
-        m_radius=r;
-        cout<<"Вызов параметризированого конструктора класса Circle"<<endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     ~Circle() // Деструктор
     {
-        cout << "Вызов деструктора Rectangle" << endl;
+        cout << __PRETTY_FUNCTION__ << endl;
     }
     float Square() override
     {
@@ -142,5 +135,3 @@ int main()
     PrintSquerOfShape(squareFigures,nFigure);
     return 0;
 }
-
-

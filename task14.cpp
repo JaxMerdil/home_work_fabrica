@@ -1,32 +1,44 @@
 #include <iostream>
-#include <ctime>
 
 using namespace std;
 
-void PassGen(void);
-
-int main()
+int main(int argc, char *argv[])
 {
-    cout<<"Password of 8 symbol: ";
-    PassGen();
-    return 0;
-}
-
-void PassGen(void)
-{
-    srand(time(NULL));
-    char str[8];
+    srand(time(0));
+    char pas[8] = {0};
+    bool upS, dwS, numS;
     int k;
-    for(int i=0;i<8;i++)
+    upS=dwS=numS=0;
+    while (upS != 1 || dwS != 1 || numS != 1)
     {
-        k=rand()%74+48;
-        if((k>=58&&k<=64)||(k>=91&&k<=94)||(k==96))
+        for (size_t i = 0; i < sizeof(pas); i++)
         {
-            i--;
-            continue;
+            k=rand()%74+48;
+            if((k>=58&&k<=64)||(k>=91&&k<=94)||(k==96))
+            {
+                i--;
+                continue;
+            }
+            else pas[i]=k;
+
+            if (pas[i] >= 'A' && pas[i] <= 'Z')
+            {
+                upS = 1;
+            }
+            else if (pas[i] >= 'a' && pas[i] <= 'z')
+            {
+                dwS = 1;
+            }
+            else if (pas[i] >= '0' && pas[i] <= '9')
+            {
+                numS = 1;
+            }
         }
-        else str[i]=k;
-        cout<<str[i];
     }
-    cout<<endl;
+    for (size_t i = 0; i < sizeof(pas); i++)
+    {
+        cout << pas[i];
+    }
+    cout << endl;
+    return 0;
 }

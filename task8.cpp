@@ -9,7 +9,7 @@ struct Map
     int nSymRep; // N symbol repeat
 };
 
-bool CheckQuantitySymbol(const string& s,Map* arCharRep, const int i);
+bool CheckQuantitySymbol(const string& s,Map* arCharRep, int i);
 
 int main()
 {
@@ -36,7 +36,7 @@ int main()
     }
 }
 
-bool CheckQuantitySymbol(const string& s,Map* arCharRep, const int i)
+bool CheckQuantitySymbol(const string& s,Map* arCharRep, int i)
 {
     for (int j = 0; j <= i; j++)
     {

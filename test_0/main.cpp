@@ -101,16 +101,18 @@ ostream& operator<< (ostream& ost, const ImmutableBuffer<Tf>& obj)
 }
 //----------------------------------------------------------------------------------------
 
+#define ARR_SIZE(a) (sizeof(a)/sizeof(a[0]))
+
 int main()
 {
-    int size=5;
-    bool arr[size];
-    arr[0]=true;
-    arr[1]=false;
-    arr[2]=true;
-    arr[3]=true;
-    arr[4]=false;
-    ImmutableBuffer<bool> data(arr, size);
+    bool arr[]={1,0,1,1,0};
+    ImmutableBuffer<bool> data(arr, ARR_SIZE(arr));
+    ImmutableBuffer<bool> data2 = data;
+    arr[0] = 1;
+    assert(data[0] == 1);
+    assert(data == data2);
+//    assert(data[0] == 0);
     cout << data << endl;
+    cout << data2 << endl;
     return 0;
 }

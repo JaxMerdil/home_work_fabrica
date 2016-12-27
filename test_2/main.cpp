@@ -1,24 +1,48 @@
 #include <iostream>
+#include <cassert>
 
 using namespace std;
 
+//---------------------------------------------------------------------------------------------------------------------------------------
+
 class HTMLElement
 {
+unsigned m_width;
+unsigned m_height;
+bool m_hidden;
 public:
-    unsigned Width() const;
-    unsigned Height() const;
-    bool Hidden() const;
-    virtual ~HTMLElement(){}
-    virtual string Render() = 0;
+    HTMLElement (unsigned width, unsigned heigth, bool hidden): m_width(width), m_height(heigth), m_hidden(hidden){}
+    unsigned Width() const
+    {
+        return m_width;
+    }
+    unsigned Height() const
+    {
+        return m_height;
+    }
+    bool Hidden() const
+    {
+        return m_hidden;
+    }
+    virtual string Render()=0;
     virtual HTMLElement* Duplicate() = 0;
+    virtual ~HTMLElement(){}
 };
 
-class HTMLButtonElement : public HTMLElement
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+class HTMLButtonElement: public HTMLElement
 {
+    string m_button;
 public:
-    const string& Title() const;
-    string Render() override{
-        return "<button>title-of-the-button</button> \n";
+    HTMLButtonElement(const string& str,unsigned width,unsigned height,bool hidden): HTMLElement(width,height,hidden), m_button(str){}
+    const string& Title() const
+    {
+        return  m_button;
+    }
+    string Render() override
+    {
+        return "\n<button>" + m_button + "</button>";
     }
     HTMLElement* Duplicate()
     {
@@ -26,12 +50,20 @@ public:
     }
 };
 
-class HTMLImageElement : public HTMLElement
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+class HTMLImageElement: public HTMLElement
 {
+    string m_image;
 public:
-    const string& Url() const;
-    string Render() override{
-        return "<img src=\"../../smiley.gif\" height=\"42\" width=\"42\"> \n";
+    HTMLImageElement(const string& str,unsigned width,unsigned height,bool hidden): HTMLElement(width,height,hidden), m_image(str){}
+    const string& Url() const
+    {
+        return m_image;
+    }
+    string Render() override
+    {
+        return "\n<img src=''../../" + m_image + "'' height=''" + to_string(Height())+"'' "+ "width=''"+to_string(Width())+"'' "+">";
     }
     HTMLElement* Duplicate()
     {
@@ -39,12 +71,20 @@ public:
     }
 };
 
-class HTMLTextAreaDocument : public HTMLElement
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+class HTMLTextAreaDocument: public HTMLElement
 {
+    string m_content;
 public:
-    const string& Content() const;
-    string Render() override{
-        return "<textarea>\ncontent-of-the-text-area\n</textarea>";
+    HTMLTextAreaDocument(const string& str,unsigned width,unsigned height,bool hidden): HTMLElement(width,height,hidden), m_content(str){}
+    const string& Content() const
+    {
+        return m_content;
+    }
+    string Render() override
+    {
+        return "\n<textarea>\n" + m_content + "\n" + "</textarea>\n";
     }
     HTMLElement* Duplicate()
     {
@@ -52,32 +92,26 @@ public:
     }
 };
 
+//---------------------------------------------------------------------------------------------------------------------------------------
 
 int main()
 {
-    const int nObj=6;
+    const int nObj=3;
     HTMLElement* HT[nObj];
-    HT[0] = new HTMLButtonElement();
-    cout << "String HTMLButtonElement: " << HT[0]->Render();
-    HT[1] = new HTMLImageElement();
-    cout << "String HTMLImageElement: " << HT[1]->Render();
-    HT[2] = new HTMLTextAreaDocument();
-    cout << "String HTMLTextAreaDocument: \n" << HT[2]->Render() << endl;
-    cout<<"------------------------------------------------------------------------"<<endl;
-//-----------------------------------------------------------------------------------------
-    HT[3] = new HTMLImageElement();
-    HT[4] = new HTMLImageElement();
-    HT[5] = new HTMLImageElement();
-//-----------------------------------------------------------------------------------------
-    HT[3]->Duplicate();
-    HT[4]->Duplicate();
-    HT[5]->Duplicate();
-//-----------------------------------------------------------------------------------------
-    cout << "String Duplicate HTMLButtonElement: " << HT[3]->Render();
-    HT[4] = new HTMLImageElement();
-    cout << "String Duplicate HTMLImageElement: " << HT[4]->Render();
-    HT[5] = new HTMLTextAreaDocument();
-    cout << "String Duplicate HTMLTextAreaDocument: \n" << HT[5]->Render() << endl;
-//-----------------------------------------------------------------------------------------
+    HT[0] = new HTMLButtonElement("title-of-the-button",100,30,true);
+    HT[1] = new HTMLImageElement("img.jpg",800,640,true);
+    HT[2] = new HTMLTextAreaDocument("content-of-the-text-area",100,30,true);
+    cout << "String HTMLButtonElement: " << HT[0]->Render() << endl;
+    cout << "String HTMLImageElement: " << HT[1]->Render() << endl;
+    cout << "String HTMLTextAreaDocument: " << HT[2]->Render() << endl;
+    cout << "---------------------------------------------------------------" << endl;
+
+    HTMLElement* duplicateHT[nObj];
+    duplicateHT[0]=HT[0]->Duplicate();
+    duplicateHT[1]=HT[1]->Duplicate();
+    duplicateHT[2]=HT[2]->Duplicate();
+    cout << "String Duplicate HTMLButtonElement: " << duplicateHT[0]->Render() << endl;
+    cout << "String Duplicate HTMLImageElement: " << duplicateHT[1]->Render() << endl;
+    cout << "String Duplicate HTMLTextAreaDocument: " << duplicateHT[2]->Render() << endl;
     return 0;
 }

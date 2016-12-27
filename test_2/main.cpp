@@ -110,6 +110,7 @@ int main()
     duplicateHT[0]=HT[0]->Duplicate();
     duplicateHT[1]=HT[1]->Duplicate();
     duplicateHT[2]=HT[2]->Duplicate();
+    assert(HT[0]->Height()==duplicateHT[0]->Height());
     cout << "String Duplicate HTMLButtonElement: " << duplicateHT[0]->Render() << endl;
     cout << "String Duplicate HTMLImageElement: " << duplicateHT[1]->Render() << endl;
     cout << "String Duplicate HTMLTextAreaDocument: " << duplicateHT[2]->Render() << endl;

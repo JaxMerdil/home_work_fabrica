@@ -1,26 +1,27 @@
 #include <iostream>
+#include <ctime>
+#include <cstring>
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main()
 {
     srand(time(0));
     char pas[8] = {0};
     bool upS, dwS, numS;
-    int k;
     upS=dwS=numS=0;
+    const char* passwComponents[] = {"abcdefghijklmnopqrstuvwxyz",
+                                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                                     "1234567890_-"
+                                    };
     while (upS != 1 || dwS != 1 || numS != 1)
     {
         for (size_t i = 0; i < sizeof(pas); i++)
         {
-            k=rand()%74+48;
-            if((k>=58&&k<=64)||(k>=91&&k<=94)||(k==96))
-            {
-                i--;
-                continue;
-            }
-            else pas[i]=k;
-
+            int ran = 0;
+            ran = rand()%3;
+            const char* comp = passwComponents[ran];
+            pas[i] = comp[rand()% strlen(comp)];
             if (pas[i] >= 'A' && pas[i] <= 'Z')
             {
                 upS = 1;
@@ -33,12 +34,7 @@ int main(int argc, char *argv[])
             {
                 numS = 1;
             }
+            cout << pas[i];
         }
     }
-    for (size_t i = 0; i < sizeof(pas); i++)
-    {
-        cout << pas[i];
-    }
-    cout << endl;
-    return 0;
 }

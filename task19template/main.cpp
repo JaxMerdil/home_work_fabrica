@@ -63,12 +63,14 @@ T MultipleTwo(T value)
 
     return value!=(T)74; // 74 = 'J'
 }
+
 template<>
 char MultipleTwo(char value)
 {
 
     return value!='J';
 }
+
 template<>
 bool MultipleTwo(bool value)
 {
@@ -132,6 +134,7 @@ T Reduce(T* arr, const int size, T (*ReduceFupc)(T, T))
     }
     return var;
 }
+
 template<>
 char Reduce(char* arr, const int size, char (*ReduceFupc)(char, char))
 {
@@ -149,18 +152,18 @@ int main()
 {
     srand(time(0));
     const int size = 20;
-    char matrix[size];
+    int matrix[size];
     cout << "Массив: "<<endl;
-    FillingMatrix<char>(matrix, size);
+    FillingMatrix(matrix, size);
     PrintMatrix(matrix, size);
-    Map<char>(matrix, size, IncrementNum);
+    Map(matrix, size, IncrementNum);
     cout << "Изменение функцией Map (++value): "<<endl;
     PrintMatrix(matrix, size);
     int newSize;
     cout<<"Изменение массива функцией Filter (Фильтр числа 74 (""J"" в аски коде), bool фильтр 0): "<<endl;
-    Filter<char>(matrix, size, newSize, MultipleTwo);
+    Filter(matrix, size, newSize, MultipleTwo);
     PrintMatrix(matrix, newSize);
     cout <<"Свертка массива функция Redus: ";
-    cout << Reduce<char>(matrix, newSize, MultiplicationTwoArr) << endl;
+    cout << Reduce(matrix, newSize, MultiplicationTwoArr) << endl;
     return 0;
 }

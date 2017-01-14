@@ -28,13 +28,15 @@ public:
     }
     void TurnOn()
     {
+        m_indicator=true;
         cout <<  "Device turn on" << endl;
     }
     void TurnOff()
     {
+        m_indicator=false;
         cout <<  "Device turn of" << endl;
     }
-    virtual void GetStatus()=0;
+    virtual  void GetStatus()const=0;
 };
 
 class Printer  : public virtual Device
@@ -60,11 +62,10 @@ public:
     {
         cout << __PRETTY_FUNCTION__ << endl;
     }
-    void GetStatus() override
+    virtual void GetStatus() const override
     {
         if(m_indicator==true)
         {
-            TurnOn();
             cout << "Firm printer " << m_firm
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
@@ -72,7 +73,6 @@ public:
         }
         else
         {
-            TurnOff();
             cout << "Firm printer " << m_firm
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
@@ -105,11 +105,10 @@ public:
         cout << __PRETTY_FUNCTION__ << endl;
     }
 
-    void GetStatus() override
+    virtual void GetStatus() const override
     {
         if(m_indicator==true)
         {
-            TurnOn();
             cout << "Firm scanner " << m_firm
                  << ", model " << m_model
                  << ", scan speed: "
@@ -118,7 +117,6 @@ public:
         }
         else
         {
-            TurnOff();
             cout << "Firm scanner " << m_firm
                  << ", model " << m_model
                  << ", scan speed: " << m_scanSpeed
@@ -145,11 +143,10 @@ public:
     {
         cout << __PRETTY_FUNCTION__ << endl;
     }
-    void GetStatus() override
+    void GetStatus() const override
     {
         if(m_indicator==true)
         {
-            TurnOn();
             cout << "Firm MFU " << m_firm
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
@@ -158,7 +155,6 @@ public:
         }
         else
         {
-            TurnOff();
             cout << "Firm MFU " << m_firm
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
@@ -170,8 +166,9 @@ public:
 
 int main()
 {
-    Printer p1("HP",true,"Deskjet 6120",21);
+    Printer p1("HP",false,"Deskjet 6120",21);
     p1.GetStatus();
+    p1.TurnOn();
     cout << "--------------------------------------------------------" << endl;
     Scanner s1("Canon",false,"MP 150",6);
     s1.GetStatus();

@@ -29,12 +29,10 @@ public:
     void TurnOn()
     {
         m_indicator=true;
-        cout <<  "Device turn on" << endl;
     }
     void TurnOff()
     {
         m_indicator=false;
-        cout <<  "Device turn of" << endl;
     }
     virtual  void GetStatus()const=0;
 };
@@ -62,13 +60,14 @@ public:
     {
         cout << __PRETTY_FUNCTION__ << endl;
     }
-    virtual void GetStatus() const override
+    void GetStatus() const override
     {
         if(m_indicator==true)
         {
             cout << "Firm printer " << m_firm
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
+                 << ", status " << m_indicator
                  << endl;
         }
         else
@@ -76,6 +75,7 @@ public:
             cout << "Firm printer " << m_firm
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
+                 << ", status " << m_indicator
                  << endl;
         }
     }
@@ -105,14 +105,14 @@ public:
         cout << __PRETTY_FUNCTION__ << endl;
     }
 
-    virtual void GetStatus() const override
+    void GetStatus() const override
     {
         if(m_indicator==true)
         {
             cout << "Firm scanner " << m_firm
                  << ", model " << m_model
-                 << ", scan speed: "
-                 << m_scanSpeed
+                 << ", scan speed: " << m_scanSpeed
+                 << ", status " << m_indicator
                  << endl;
         }
         else
@@ -120,6 +120,7 @@ public:
             cout << "Firm scanner " << m_firm
                  << ", model " << m_model
                  << ", scan speed: " << m_scanSpeed
+                 << ", status " << m_indicator
                  << endl;
         }
     }
@@ -151,6 +152,7 @@ public:
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
                  << ", scan speed: " << m_scanSpeed
+                 << ", status " << m_indicator
                  << endl;
         }
         else
@@ -159,6 +161,7 @@ public:
                  << ", model " << m_model
                  << ", ppm: " << m_ppm
                  << ", scan speed: " << m_scanSpeed
+                 << ", status " << m_indicator
                  << endl;
         }
     }
@@ -167,13 +170,14 @@ public:
 int main()
 {
     Printer p1("HP",false,"Deskjet 6120",21);
+    p1.TurnOn(); // вкл устр., смена инд.
     p1.GetStatus();
-    p1.TurnOn();
     cout << "--------------------------------------------------------" << endl;
     Scanner s1("Canon",false,"MP 150",6);
     s1.GetStatus();
     cout << "--------------------------------------------------------" << endl;
     MFU m1("HP",false,"Deskjet F2483",17,8);
+    m1.TurnOn(); // вкл устр., смена инд.
     m1.GetStatus();
     cout << "--------------------------------------------------------" << endl;
     return 0;

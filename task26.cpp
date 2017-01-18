@@ -22,7 +22,7 @@ public:
     {
         cout << __PRETTY_FUNCTION__ << endl;
     }
-    ~Device()
+    virtual ~Device()
     {
         cout << __PRETTY_FUNCTION__ << endl;
     }
@@ -62,22 +62,11 @@ public:
     }
     void GetStatus() const override
     {
-        if(m_indicator==true)
-        {
-            cout << "Firm printer " << m_firm
-                 << ", model " << m_model
-                 << ", ppm: " << m_ppm
-                 << ", status " << m_indicator
-                 << endl;
-        }
-        else
-        {
-            cout << "Firm printer " << m_firm
-                 << ", model " << m_model
-                 << ", ppm: " << m_ppm
-                 << ", status " << m_indicator
-                 << endl;
-        }
+        cout << "Firm printer " << m_firm
+             << ", model " << m_model
+             << ", ppm: " << m_ppm
+             << ", status " << m_indicator
+             << endl;
     }
 };
 
@@ -107,22 +96,11 @@ public:
 
     void GetStatus() const override
     {
-        if(m_indicator==true)
-        {
-            cout << "Firm scanner " << m_firm
-                 << ", model " << m_model
-                 << ", scan speed: " << m_scanSpeed
-                 << ", status " << m_indicator
-                 << endl;
-        }
-        else
-        {
-            cout << "Firm scanner " << m_firm
-                 << ", model " << m_model
-                 << ", scan speed: " << m_scanSpeed
-                 << ", status " << m_indicator
-                 << endl;
-        }
+        cout << "Firm scanner " << m_firm
+             << ", model " << m_model
+             << ", scan speed: " << m_scanSpeed
+             << ", status " << m_indicator
+             << endl;
     }
 };
 
@@ -146,24 +124,12 @@ public:
     }
     void GetStatus() const override
     {
-        if(m_indicator==true)
-        {
-            cout << "Firm MFU " << m_firm
-                 << ", model " << m_model
-                 << ", ppm: " << m_ppm
-                 << ", scan speed: " << m_scanSpeed
-                 << ", status " << m_indicator
-                 << endl;
-        }
-        else
-        {
-            cout << "Firm MFU " << m_firm
-                 << ", model " << m_model
-                 << ", ppm: " << m_ppm
-                 << ", scan speed: " << m_scanSpeed
-                 << ", status " << m_indicator
-                 << endl;
-        }
+        cout << "Firm MFU " << m_firm
+             << ", model " << m_model
+             << ", ppm: " << m_ppm
+             << ", scan speed: " << m_scanSpeed
+             << ", status " << m_indicator
+             << endl;
     }
 };
 

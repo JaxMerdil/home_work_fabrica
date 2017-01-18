@@ -1,28 +1,21 @@
 #include <iostream>
 #include <iomanip>
-#include<cstring>
+#include <cstring>
 
 using namespace std;
 
 //-------------------------------------------------------------------
 template<class T>
-void FillingMatrix(T* arr,const int size)
+void FillingMatrix(T* arr, int size)
 {
     for(int i  = 0; i < size; i++)
     {
-        arr[i] = rand()%25+65;
+        arr[i] = rand()%20;
     }
 }
+
 template<>
-void FillingMatrix(char* arr,const int size)
-{
-    for(int i  = 0; i < size; i++)
-    {
-        arr[i] = rand()%25+65;
-    }
-}
-template<>
-void FillingMatrix(bool* arr,const int size)
+void FillingMatrix(bool* arr, int size)
 {
     for(int i  = 0; i < size; i++)
     {
@@ -44,70 +37,48 @@ void PrintMatrix(T* arr, int size)
 //-------------------------------------------------------------------
 
 template<class T>
-T IncrementNum(T value)
+T  IncrementNum(T& value)
 {
-    return ++value;
+     return  value++;
 }
-template<>
-bool IncrementNum(bool value)
+//template<>
+//bool IncrementNum(bool& value)
+//{
+//    return !value;
+//}
+
+//-------------------------------------------------------------------
+
+template<class T, int N>
+T FilterSymbol(const T& value)
 {
-    if(value==1) return value=0;
-            else return value=1;
+
+    return value!=N;
 }
 
 //-------------------------------------------------------------------
 
 template<class T>
-T MultipleTwo(T value)
-{
-
-    return value!=(T)74; // 74 = 'J'
-}
-
-template<>
-char MultipleTwo(char value)
-{
-
-    return value!='J';
-}
-
-template<>
-bool MultipleTwo(bool value)
-{
-
-    return value!=0;
-}
-
-//-------------------------------------------------------------------
-
-template<class T>
-T MultiplicationTwoArr(T arrA, T arrB)
+T SumArr(const T& arrA,const T& arrB)
 {
      return  arrA+arrB;
 }
 
-template<>
-char MultiplicationTwoArr(char arrA, char arrB)
-{
-
-     return  arrA+arrB;
-}
 //-------------------------------------------------------------------
 
 template<class T>
-T *Map(T* arr, const int size, T (*MapFunc)(T))
+T* Map(T* arr, int size,  T (*MapFunc)(T&))
 {
     for(int i = 0; i < size; i++)
     {
-        arr[i]  = MapFunc(arr[i]);
+         MapFunc(arr[i]);
     }
     return arr;
 }
-
 //-------------------------------------------------------------------
 
 template<class T>
-T *Filter(T arr[], const int size, int& newSize, T (*FilterFunc)(T))
+T *Filter(T* arr, int size, int& newSize, T (*FilterFunc)(const T&))
 {
     int j = 0;
     for(int i = 0; i < size; i++)
@@ -125,20 +96,9 @@ T *Filter(T arr[], const int size, int& newSize, T (*FilterFunc)(T))
 //-------------------------------------------------------------------
 
 template<class T>
-T Reduce(T* arr, const int size, T (*ReduceFupc)(T, T))
+T Reduce(T* arr, int size, T (*ReduceFupc)(const T&, const T&))
 {
     T var = 0;
-    for(int i = 0; i < size; i++)
-    {
-      var = ReduceFupc(var,arr[i]);
-    }
-    return var;
-}
-
-template<>
-char Reduce(char* arr, const int size, char (*ReduceFupc)(char, char))
-{
-    char var = 0;
     for(int i = 0; i < size; i++)
     {
       var = ReduceFupc(var,arr[i]);
@@ -156,14 +116,14 @@ int main()
     cout << "Массив: "<<endl;
     FillingMatrix(matrix, size);
     PrintMatrix(matrix, size);
-    Map(matrix, size, IncrementNum);
+    Map(matrix, size, IncrementNum<int>);
     cout << "Изменение функцией Map (++value): "<<endl;
     PrintMatrix(matrix, size);
     int newSize;
-    cout<<"Изменение массива функцией Filter (Фильтр числа 74 (""J"" в аски коде), bool фильтр 0): "<<endl;
-    Filter(matrix, size, newSize, MultipleTwo);
+    cout<<"Изменение массива функцией Filter (Фильтр числа N (""N-символа"" в аски коде), bool фильтр 0): "<<endl;
+    Filter(matrix, size, newSize, FilterSymbol<int,18>);
     PrintMatrix(matrix, newSize);
     cout <<"Свертка массива функция Redus: ";
-    cout << Reduce(matrix, newSize, MultiplicationTwoArr) << endl;
+    cout << Reduce(matrix, newSize, SumArr) << endl;
     return 0;
 }

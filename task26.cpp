@@ -4,10 +4,11 @@ using namespace std;
 
 class Device
 {
-public:
+protected:
     string m_firm;
     bool m_indicator;
     string m_model;
+public:
     Device()
         : m_firm("N/A")
         , m_indicator(0)
@@ -39,8 +40,9 @@ public:
 
 class Printer  : public virtual Device
 {
-public:
+protected:
     unsigned int m_ppm; // к-во печати страниц в минуту
+public:
     Printer (unsigned int ppm)
         : m_ppm(ppm)
     {
@@ -72,8 +74,9 @@ public:
 
 class Scanner : public virtual Device
 {
-public:
+protected:
     unsigned int m_scanSpeed; // скорость сканирования
+public:
     Scanner(unsigned int scanSpeed)
         : m_scanSpeed(scanSpeed)
     {

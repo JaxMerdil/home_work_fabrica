@@ -9,7 +9,7 @@ class String
 private:
     char* m_buffer;
     size_t* m_refCounter;
-    void VerifyCounter()
+    void DecrementCounter()
         {
             (*m_refCounter)--;
             if(*m_refCounter == 0)
@@ -56,21 +56,34 @@ public:
             }
         }
     }
+// taken from the project 8 lines 60 - 89
+    void swap(String& other)
+    {
+        std::swap(m_buffer, other.m_buffer);
+        std::swap(m_refCounter, other.m_refCounter);
+    }
 
     String& operator = (const String& rhs)
     {
-        VerifyCounter();
-        m_buffer = rhs.m_buffer;
-        m_refCounter = rhs.m_refCounter;
-        (*m_refCounter)++;
+        DecrementCounter();
+        if (&rhs != this)
+        {
+            String tmp(rhs);
+            swap(tmp);
+        }
         return *this;
+//        m_buffer = rhs.m_buffer;
+//        m_refCounter = rhs.m_refCounter;
+//        (*m_refCounter)++;
+//        return *this;
     }
 
     String& operator = (const char* value)
     {
-        VerifyCounter();
-        m_refCounter = new size_t(1);
-        m_buffer = new char[strlen(value) + 1];
+        DecrementCounter();
+        String(value).swap(*this);
+//        m_refCounter = new size_t(1);
+//        m_buffer = new char[strlen(value) + 1];
         strcpy(m_buffer, value);
         return *this;
     }
@@ -87,7 +100,7 @@ public:
 
     void set_elem(size_t index, char value)
     {
-        VerifyCounter();
+        DecrementCounter();
         m_refCounter = new size_t(1);
         char *temp = new char[strlen(m_buffer) + 1];
         strcpy(temp, m_buffer);

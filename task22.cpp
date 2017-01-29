@@ -42,18 +42,11 @@ public:
     ~String()
     {
         cout << "~String : "<< this << endl;
-        (*m_refCounter)--;
-
-        if(*m_refCounter == 0)
+        if (m_buffer)
         {
-            if (m_buffer)
-            {
-                delete[] m_buffer;
-                delete[] m_refCounter;
-                m_buffer = nullptr;
-                m_refCounter = nullptr;
-                cout << "delete[] + nullptr" << endl;
-            }
+            DecrementCounter();
+            m_buffer = nullptr;
+            m_refCounter = nullptr;
         }
     }
 // taken from the project 8 lines 60 - 89
@@ -65,25 +58,19 @@ public:
 
     String& operator = (const String& rhs)
     {
-        DecrementCounter();
+
         if (&rhs != this)
         {
             String tmp(rhs);
             swap(tmp);
         }
         return *this;
-//        m_buffer = rhs.m_buffer;
-//        m_refCounter = rhs.m_refCounter;
-//        (*m_refCounter)++;
-//        return *this;
     }
 
     String& operator = (const char* value)
     {
         DecrementCounter();
         String(value).swap(*this);
-//        m_refCounter = new size_t(1);
-//        m_buffer = new char[strlen(value) + 1];
         strcpy(m_buffer, value);
         return *this;
     }
@@ -100,11 +87,11 @@ public:
 
     void set_elem(size_t index, char value)
     {
-        DecrementCounter();
-        m_refCounter = new size_t(1);
-        char *temp = new char[strlen(m_buffer) + 1];
-        strcpy(temp, m_buffer);
-        m_buffer = temp;
+        if (count()>1)
+        {
+            String tmp(m_buffer);
+            std::swap(*this, tmp);
+        }
         m_buffer[index] = value;
     }
 

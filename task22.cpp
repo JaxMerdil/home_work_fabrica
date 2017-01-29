@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <cstring>
 #include <cassert>
 
@@ -9,6 +9,16 @@ class String
 private:
     char* m_buffer;
     size_t* m_refCounter;
+    void VerifyCounter()
+        {
+            (*m_refCounter)--;
+            if(*m_refCounter == 0)
+            {
+                delete []m_buffer;
+                delete []m_refCounter;
+                cout << "delete" << endl;
+            }
+        }
 public:
 
     String() : m_buffer(nullptr), m_refCounter(new size_t(1))
@@ -49,13 +59,7 @@ public:
 
     String& operator = (const String& rhs)
     {
-        (*m_refCounter)--;
-        if(*m_refCounter == 0)
-        {
-            delete[] m_buffer;
-            delete[] m_refCounter;
-            cout << "delete[]" << endl;
-        }
+        VerifyCounter();
         m_buffer = rhs.m_buffer;
         m_refCounter = rhs.m_refCounter;
         (*m_refCounter)++;
@@ -64,13 +68,7 @@ public:
 
     String& operator = (const char* value)
     {
-        (*m_refCounter)--;
-        if(*m_refCounter == 0)
-        {
-            delete[] m_buffer;
-            delete[] m_refCounter;
-            cout << "delete[]" << endl;
-        }
+        VerifyCounter();
         m_refCounter = new size_t(1);
         m_buffer = new char[strlen(value) + 1];
         strcpy(m_buffer, value);
@@ -89,13 +87,7 @@ public:
 
     void set_elem(size_t index, char value)
     {
-        (*m_refCounter)--;
-        if(*m_refCounter == 0)
-        {
-            delete[] m_buffer;
-            delete[] m_refCounter;
-            cout << "delete[]" << endl;
-        }
+        VerifyCounter();
         m_refCounter = new size_t(1);
         char *temp = new char[strlen(m_buffer) + 1];
         strcpy(temp, m_buffer);
@@ -109,9 +101,6 @@ public:
     }
 };
 
-
-
-
 int main()
 {
     String s("abc");
@@ -121,13 +110,14 @@ int main()
         assert(s.count()==2);
         assert(s2.count()==2);
     }
-
     assert(s.count()==1);
     String s3 = s;
     assert(s.count()==2);
     s3.set_elem(0, 'X');
     assert(s.count()==1);
     assert(s3.count()==1);
+    assert(strcmp(s.GetString(), "abc")==0);
+    assert(strcmp(s3.GetString(), "Xbc")==0);
     cout << "PASSED" << endl;
     return 0;
 }

@@ -58,7 +58,6 @@ public:
 
     String& operator = (const String& rhs)
     {
-
         if (&rhs != this)
         {
             String tmp(rhs);
@@ -69,9 +68,7 @@ public:
 
     String& operator = (const char* value)
     {
-        DecrementCounter();
         String(value).swap(*this);
-        strcpy(m_buffer, value);
         return *this;
     }
 
@@ -112,6 +109,8 @@ int main()
     }
     assert(s.count()==1);
     String s3 = s;
+    String s4 = "ass";
+    assert(strcmp(s4.GetString(), "ass")==0);
     assert(s.count()==2);
     s3.set_elem(0, 'X');
     assert(s.count()==1);

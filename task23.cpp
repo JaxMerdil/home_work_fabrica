@@ -2,6 +2,7 @@
 #include <map>
 #include <cstring>
 #include <cassert>
+#include <algorithm>
 
 using namespace std;
 
@@ -19,17 +20,21 @@ private:
         { 'D', 500 },
         { 'M', 1000 }
     };
+
+    struct ArabRoman
+    {
+        unsigned int arab;
+        char const* roman;
+    };
 public:
-    RomanNumber() : m_romanNumber(0), m_arabicNumber(0)
-    {}
-    RomanNumber(const string romanNumb) : m_romanNumber(romanNumb),m_arabicNumber(0)
+    RomanNumber() : m_romanNumber("NaN"), m_arabicNumber(0) {}
+    RomanNumber(const string& romanNumb) : m_romanNumber(romanNumb),m_arabicNumber(0)
     {
         m_arabicNumber=ConvertRomanToArab();
     }
     int ConvertRomanToArab()
     {
         int number = 0;
-
         for (auto value = m_romanNumber.begin(); value != m_romanNumber.end(); ++value)
         {
             if(RomanArab[*value] >= RomanArab[*(value+1)])
@@ -43,224 +48,195 @@ public:
         }
         return number;
     }
-//---------------------------------------------------------
+
+    string ConvertArabToRoman(unsigned int value) // goo.gl/xfOikj
+    {
+        const struct ArabRoman Data[] =
+        {
+        {1000, "M"},
+        {900, "CM"},
+        {500, "D"},
+        {400, "CD"},
+        {100, "C"},
+        { 90, "XC"},
+        { 50, "L"},
+        { 40, "XL"},
+        { 10, "X"},
+        { 9, "IX"},
+        { 5, "V"},
+        { 4, "IV"},
+        { 1, "I"},
+        { 0, NULL} // end marker
+    };
+        string result;
+        for (const ArabRoman* current = Data; current->arab > 0; ++current)
+        {
+            while (value >= current->arab)
+            {
+                result += current->roman;
+                value -= current->arab;
+            }
+        }
+        return result;
+    }
+
+    //---------------------------------------------------------
+
     explicit operator int()const
     {
         return m_arabicNumber;
     }
-//---------------------------------------------------------
-    int operator + (const RomanNumber& rhs)
+
+    RomanNumber operator + (const RomanNumber& rhs)
     {
-        return m_arabicNumber + rhs.m_arabicNumber;
+        RomanNumber tmp;
+        tmp.m_arabicNumber = this->m_arabicNumber + rhs.m_arabicNumber;
+        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        return tmp;
+        //        return *this+=rhs.m_arabicNumber;
     }
-    friend unsigned int operator + (unsigned int lhs, const RomanNumber& rhs)
+
+    RomanNumber operator - (const RomanNumber& rhs)
     {
-        return (lhs + rhs.m_arabicNumber);
+        RomanNumber tmp;
+        tmp.m_arabicNumber = this->m_arabicNumber - rhs.m_arabicNumber;
+        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        return tmp;
+        //        return *this-=rhs.m_arabicNumber;
     }
-    friend RomanNumber operator + (const RomanNumber& lhs, unsigned int rhs)
+
+    RomanNumber operator * (const RomanNumber& rhs)
     {
-        return (lhs += rhs);
+        RomanNumber tmp;
+        tmp.m_arabicNumber = this->m_arabicNumber * rhs.m_arabicNumber;
+        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        return tmp;
+        //        return *this*=rhs.m_arabicNumber;
     }
-//---------------------------------------------------------
-    int operator - (const RomanNumber& rhs)
+
+    RomanNumber operator / (const RomanNumber& rhs)
     {
-        return m_arabicNumber - rhs.m_arabicNumber;
+        RomanNumber tmp;
+        tmp.m_arabicNumber = this->m_arabicNumber / rhs.m_arabicNumber;
+        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        return tmp;
+        //        return *this/=rhs.m_arabicNumber;
     }
-    friend unsigned int operator - (unsigned int lhs, const RomanNumber& rhs)
+
+    RomanNumber& operator += (const RomanNumber& rhs)
     {
-        return (lhs - rhs.m_arabicNumber);
-    }
-    friend RomanNumber operator - (const RomanNumber& lhs, unsigned int rhs)
-    {
-        return (lhs -= rhs);
-    }
-//---------------------------------------------------------
-    int operator * (const RomanNumber& rhs)
-    {
-        return m_arabicNumber * rhs.m_arabicNumber;
-    }
-    friend unsigned int operator * (unsigned int lhs, const RomanNumber& rhs)
-    {
-        return (lhs * rhs.m_arabicNumber);
-    }
-    friend RomanNumber operator * (const RomanNumber& lhs, unsigned int rhs)
-    {
-        return (lhs *= rhs);
-    }
-//---------------------------------------------------------
-    int operator / (const RomanNumber& rhs)
-    {
-        return m_arabicNumber / rhs.m_arabicNumber;
-    }
-    friend unsigned int operator / (unsigned int lhs, const RomanNumber& rhs)
-    {
-        return (lhs / rhs.m_arabicNumber);
-    }
-    friend RomanNumber operator / (const RomanNumber& lhs, unsigned int rhs)
-    {
-        return (lhs /= rhs);
-    }
-//---------------------------------------------------------
-    friend int operator += (RomanNumber& lhs,const RomanNumber& rhs)
-    {
-        lhs.m_arabicNumber += rhs.m_arabicNumber;
-        return lhs.m_arabicNumber;
-    }
-    friend unsigned int operator += (unsigned int lhs, const RomanNumber& rhs)
-    {
-        lhs+=rhs.m_arabicNumber;
-        return lhs;
+        this->m_arabicNumber += rhs.m_arabicNumber;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return *this;
     }
     friend RomanNumber operator += (RomanNumber lhs, unsigned int rhs)
     {
         lhs.m_arabicNumber += rhs;
         return lhs;
     }
-//---------------------------------------------------------
-    friend int operator -= (RomanNumber& lhs,const RomanNumber& rhs)
+    //---------------------------------------------------------
+    RomanNumber& operator -= (const RomanNumber& rhs)
     {
-        lhs.m_arabicNumber -= rhs.m_arabicNumber;
-        return lhs.m_arabicNumber;
+        this->m_arabicNumber -= rhs.m_arabicNumber;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return *this;
     }
-    friend unsigned int operator -= (unsigned int lhs, const RomanNumber& rhs)
-    {
-        lhs -= rhs.m_arabicNumber;
-        return lhs;
-    }
+
     friend RomanNumber operator -= (RomanNumber lhs, unsigned int rhs)
     {
         lhs.m_arabicNumber -= rhs;
         return lhs;
     }
-//---------------------------------------------------------
-    friend int operator *= (RomanNumber& lhs,const RomanNumber& rhs)
+    //---------------------------------------------------------
+    RomanNumber& operator *= (const RomanNumber& rhs)
     {
-        lhs.m_arabicNumber *= rhs.m_arabicNumber;
-        return lhs.m_arabicNumber;
+        this->m_arabicNumber *= rhs.m_arabicNumber;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return *this;
     }
-    friend unsigned int operator *= (unsigned int lhs, const RomanNumber& rhs)
-    {
-        lhs *= rhs.m_arabicNumber;
-        return lhs;
-    }
+
     friend RomanNumber operator *= (RomanNumber lhs, unsigned int rhs)
     {
         lhs.m_arabicNumber *= rhs;
         return lhs;
     }
-//---------------------------------------------------------
-    friend int operator /= (RomanNumber& lhs,const RomanNumber& rhs)
+    //---------------------------------------------------------
+    RomanNumber& operator /= (const RomanNumber& rhs)
     {
-        lhs.m_arabicNumber /= rhs.m_arabicNumber;
-        return lhs.m_arabicNumber;
-    }
-    friend unsigned int operator /= (unsigned int lhs, const RomanNumber& rhs)
-    {
-        lhs /= rhs.m_arabicNumber;
-        return lhs;
+        this->m_arabicNumber /= rhs.m_arabicNumber;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return *this;
     }
     friend RomanNumber operator /= (RomanNumber lhs, unsigned int rhs)
     {
         lhs.m_arabicNumber /= rhs;
         return lhs;
     }
-//---------------------------------------------------------
+    //---------------------------------------------------------
     bool operator == (const RomanNumber& rhs)
     {
-        return (m_arabicNumber == rhs.m_arabicNumber);
+        return (this->m_arabicNumber == rhs.m_arabicNumber);
     }
-    friend bool operator == (const int lhs, const RomanNumber& rhs)
-    {
-        return (lhs == rhs.m_arabicNumber);
-    }
-    friend bool operator == (const RomanNumber& lhs, const int rhs)
-    {
-        return (lhs.m_arabicNumber == rhs);
-    }
-//---------------------------------------------------------
+    //---------------------------------------------------------
     bool operator != (const RomanNumber& rhs)
     {
-        return !(m_arabicNumber == rhs.m_arabicNumber);
+        return !(*this == rhs);
     }
-    friend bool operator != (const int lhs, const RomanNumber& rhs)
-    {
-        return !(lhs == rhs.m_arabicNumber);
-    }
-    friend bool operator != (const RomanNumber& lhs, const int rhs)
-    {
-        return !(lhs.m_arabicNumber == rhs);
-    }
-//---------------------------------------------------------
+    //---------------------------------------------------------
     bool operator < (const RomanNumber& rhs)
     {
-        return (m_arabicNumber < rhs.m_arabicNumber);
+        return (this->m_arabicNumber < rhs.m_arabicNumber);
     }
-    friend bool operator < (const int lhs, const RomanNumber& rhs)
-    {
-        return (lhs < rhs.m_arabicNumber);
-    }
-    friend bool operator < (const RomanNumber& lhs, const int rhs)
-    {
-        return (lhs.m_arabicNumber < rhs);
-    }
-//---------------------------------------------------------
+    //---------------------------------------------------------
     bool operator <= (const RomanNumber& rhs)
     {
-        return (m_arabicNumber < rhs.m_arabicNumber || m_arabicNumber == rhs.m_arabicNumber);
+        return *this < rhs || *this == rhs;
     }
-    friend bool operator <= (const int lhs, const RomanNumber& rhs)
-    {
-        return (lhs < rhs.m_arabicNumber || lhs == rhs.m_arabicNumber);
-    }
-    friend bool operator <= (const RomanNumber& lhs, const int rhs)
-    {
-        return (lhs.m_arabicNumber < rhs || lhs.m_arabicNumber == rhs);
-    }
-//---------------------------------------------------------
+    //---------------------------------------------------------
     bool operator > (const RomanNumber& rhs)
     {
-        return (m_arabicNumber > rhs.m_arabicNumber);
+        return (this->m_arabicNumber > rhs.m_arabicNumber);
     }
-    friend bool operator > (const int lhs, const RomanNumber& rhs)
-    {
-        return (lhs > rhs.m_arabicNumber);
-    }
-    friend bool operator > (const RomanNumber& lhs, const int rhs)
-    {
-        return (lhs.m_arabicNumber > rhs);
-    }
-//---------------------------------------------------------
+    //---------------------------------------------------------
     bool operator >= (const RomanNumber& rhs)
     {
-        return (m_arabicNumber > rhs.m_arabicNumber || m_arabicNumber == rhs.m_arabicNumber);
+        return *this > rhs || *this == rhs;
     }
-    friend bool operator >= (const int lhs, const RomanNumber& rhs)
+    //---------------------------------------------------------
+    RomanNumber operator = (const RomanNumber& rhs){
+        this->m_romanNumber = rhs.m_romanNumber;
+        this->m_arabicNumber = rhs.m_arabicNumber;
+        return  *this;
+    }
+    //---------------------------------------------------------
+    RomanNumber operator++ ()
     {
-        return (lhs > rhs.m_arabicNumber || lhs == rhs.m_arabicNumber);
+        ++this->m_arabicNumber;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return	*this;
     }
-    friend bool operator >= (const RomanNumber& lhs, const int rhs)
+    RomanNumber operator ++ (int)
     {
-        return (lhs.m_arabicNumber > rhs || lhs.m_arabicNumber == rhs);
+        RomanNumber tmp = *this;
+        this->m_arabicNumber++;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return tmp;
     }
-//---------------------------------------------------------
-    int operator ++ ()
+    //---------------------------------------------------------
+    RomanNumber operator -- ()
     {
-        return	(++ m_arabicNumber);
+        --this->m_arabicNumber;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return *this;
     }
-    int operator ++ (int)
+    RomanNumber operator -- (int)
     {
-        return (m_arabicNumber ++);
+        RomanNumber tmp = *this;
+        this->m_arabicNumber--;
+        this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
+        return tmp;
     }
-//---------------------------------------------------------
-    int operator -- ()
-    {
-        return	(-- m_arabicNumber);
-    }
-    int operator -- (int)
-    {
-        return (m_arabicNumber --);
-    }
-//---------------------------------------------------------
+    //---------------------------------------------------------
     friend ostream& operator << (ostream& os, const RomanNumber& obj)
     {
         os << "Arab number: " << obj.m_arabicNumber << endl;
@@ -268,7 +244,137 @@ public:
 
         return os;
     }
+    friend istream& operator>> (istream& is, RomanNumber& rhs)
+    {
+        is >> rhs.m_arabicNumber;
+        return is;
+    }
 };
+
+//---------------------------------------------------------
+bool operator == (const int lhs, const RomanNumber& rhs)
+{
+    return (lhs == static_cast<int>(rhs));
+}
+
+bool operator == (const RomanNumber& lhs, const int rhs)
+{
+    return (static_cast<int>(lhs) == rhs);
+}
+
+bool operator != (const int lhs, const RomanNumber& rhs)
+{
+    return !(lhs == static_cast<int>(rhs));
+}
+
+bool operator != (const RomanNumber& lhs, const int rhs)
+{
+    return !(static_cast<int>(lhs) == rhs);
+}
+
+bool operator < (const int lhs, const RomanNumber& rhs)
+{
+    return (lhs < static_cast<int>(rhs));
+}
+
+bool operator < (const RomanNumber& lhs, const int rhs)
+{
+    return (static_cast<int>(lhs) < rhs);
+}
+
+bool operator <= (const int lhs, const RomanNumber& rhs)
+{
+    return (lhs < static_cast<int>(rhs) || lhs == static_cast<int>(rhs));
+}
+
+bool operator <= (const RomanNumber& lhs, const int rhs)
+{
+    return (static_cast<int>(lhs) < rhs || static_cast<int>(lhs) == rhs);
+}
+
+bool operator > (const int lhs, const RomanNumber& rhs)
+{
+    return (lhs > static_cast<int>(rhs));
+}
+bool operator > (const RomanNumber& lhs, const int rhs)
+{
+    return (static_cast<int>(lhs) > rhs);
+}
+
+bool operator >= (const int lhs, const RomanNumber& rhs)
+{
+    return (lhs > static_cast<int>(rhs) || lhs == static_cast<int>(rhs));
+}
+bool operator >= (const RomanNumber& lhs, const int rhs)
+{
+    return (static_cast<int>(lhs) > rhs || static_cast<int>(lhs) == rhs);
+}
+
+//---------------------------------------------------------
+
+unsigned int operator + (unsigned int lhs, const RomanNumber& rhs)
+{
+    return (lhs += static_cast<int>(rhs));
+}
+RomanNumber operator + (const RomanNumber& lhs, unsigned int rhs)
+{
+    return (lhs += rhs);
+}
+
+unsigned int operator - (unsigned int lhs, const RomanNumber& rhs)
+{
+    return (lhs -= static_cast<int>(rhs));
+}
+
+RomanNumber operator - (const RomanNumber& lhs, unsigned int rhs)
+{
+    return (lhs -= rhs);
+}
+
+unsigned int operator * (unsigned int lhs, const RomanNumber& rhs)
+{
+    return (lhs *= static_cast<int>(rhs));
+}
+
+RomanNumber operator * (const RomanNumber& lhs, unsigned int rhs)
+{
+    return (lhs *= rhs);
+}
+
+unsigned int operator / (unsigned int lhs, const RomanNumber& rhs)
+{
+    return (lhs /= static_cast<int>(rhs));
+}
+
+RomanNumber operator / (const RomanNumber& lhs, unsigned int rhs)
+{
+    return (lhs /= rhs);
+}
+
+unsigned int operator += (unsigned int lhs, const RomanNumber& rhs)
+{
+    lhs+=static_cast<int>(rhs);
+    return lhs;
+}
+
+unsigned int operator -= (unsigned int lhs, const RomanNumber& rhs)
+{
+    lhs -= static_cast<int>(rhs);
+    return lhs;
+}
+
+unsigned int operator *= (unsigned int lhs, const RomanNumber& rhs)
+{
+    lhs *= static_cast<int>(rhs);
+    return lhs;
+}
+
+unsigned int operator /= (unsigned int lhs, const RomanNumber& rhs)
+{
+    lhs /= static_cast<int>(rhs);
+    return lhs;
+}
+
 
 int main()
 {

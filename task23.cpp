@@ -20,7 +20,7 @@ private:
         { 'D', 500 },
         { 'M', 1000 }
     };
-
+    
     struct ArabRoman
     {
         unsigned int arab;
@@ -48,7 +48,7 @@ public:
         }
         return number;
     }
-
+    
     string ConvertArabToRoman(unsigned int value) // goo.gl/xfOikj
     {
         const struct ArabRoman Data[] =
@@ -79,50 +79,50 @@ public:
         }
         return result;
     }
-
+    
     //---------------------------------------------------------
-
+    
     explicit operator int()const
     {
         return m_arabicNumber;
     }
-
+    
     RomanNumber operator + (const RomanNumber& rhs)
     {
-        RomanNumber tmp;
-        tmp.m_arabicNumber = this->m_arabicNumber + rhs.m_arabicNumber;
-        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
-        return tmp;
-        //        return *this+=rhs.m_arabicNumber;
+        //        RomanNumber tmp;
+        //        tmp.m_arabicNumber = this->m_arabicNumber + rhs.m_arabicNumber;
+        ////        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        //        return tmp;
+        return *this += rhs.m_arabicNumber;
     }
-
+    
     RomanNumber operator - (const RomanNumber& rhs)
     {
-        RomanNumber tmp;
-        tmp.m_arabicNumber = this->m_arabicNumber - rhs.m_arabicNumber;
-        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
-        return tmp;
-        //        return *this-=rhs.m_arabicNumber;
+        //        RomanNumber tmp;
+        //        tmp.m_arabicNumber = this->m_arabicNumber - rhs.m_arabicNumber;
+        //      //  tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        //        return tmp;
+        return *this -= rhs.m_arabicNumber;
     }
-
+    
     RomanNumber operator * (const RomanNumber& rhs)
     {
-        RomanNumber tmp;
-        tmp.m_arabicNumber = this->m_arabicNumber * rhs.m_arabicNumber;
-        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
-        return tmp;
-        //        return *this*=rhs.m_arabicNumber;
+        //        RomanNumber tmp;
+        //        tmp.m_arabicNumber = this->m_arabicNumber * rhs.m_arabicNumber;
+        //     //   tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        //        return tmp;
+        return *this *= rhs.m_arabicNumber;
     }
-
+    
     RomanNumber operator / (const RomanNumber& rhs)
     {
-        RomanNumber tmp;
-        tmp.m_arabicNumber = this->m_arabicNumber / rhs.m_arabicNumber;
-        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
-        return tmp;
-        //        return *this/=rhs.m_arabicNumber;
+        //        RomanNumber tmp;
+        //        tmp.m_arabicNumber = this->m_arabicNumber / rhs.m_arabicNumber;
+        ////        tmp.m_romanNumber = ConvertArabToRoman(tmp.m_arabicNumber);
+        //        return tmp;
+        return *this /= rhs.m_arabicNumber;
     }
-
+    
     RomanNumber& operator += (const RomanNumber& rhs)
     {
         this->m_arabicNumber += rhs.m_arabicNumber;
@@ -141,7 +141,7 @@ public:
         this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
         return *this;
     }
-
+    
     friend RomanNumber operator -= (RomanNumber lhs, unsigned int rhs)
     {
         lhs.m_arabicNumber -= rhs;
@@ -154,7 +154,7 @@ public:
         this->m_romanNumber = ConvertArabToRoman(this->m_arabicNumber);
         return *this;
     }
-
+    
     friend RomanNumber operator *= (RomanNumber lhs, unsigned int rhs)
     {
         lhs.m_arabicNumber *= rhs;
@@ -237,11 +237,10 @@ public:
         return tmp;
     }
     //---------------------------------------------------------
-    friend ostream& operator << (ostream& os, const RomanNumber& obj)
+    friend ostream& operator << (ostream& os, RomanNumber& obj)
     {
         os << "Arab number: " << obj.m_arabicNumber << endl;
-        os << "Rome number: " << obj.m_romanNumber << endl;
-
+        os << "Rome number: " <<  obj.ConvertArabToRoman(obj.m_arabicNumber) << endl;
         return os;
     }
     friend istream& operator>> (istream& is, RomanNumber& rhs)
@@ -378,7 +377,7 @@ unsigned int operator /= (unsigned int lhs, const RomanNumber& rhs)
 
 int main()
 {
-
+    
     RomanNumber r1 = RomanNumber("MDIL");
     RomanNumber r2("MCDXLIX");
     cout << r1 << endl;

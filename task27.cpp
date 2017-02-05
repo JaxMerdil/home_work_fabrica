@@ -31,7 +31,7 @@ int main()
     }
     for (auto it = words_count.begin(); it != words_count.end(); ++it)
     {
-        sortMap.insert(pair<int, string>((*it).second, (*it).first));
+        sortMap.insert({(*it).second, (*it).first});
     }
     int top=0;
     for (auto it = sortMap.rbegin(); it != sortMap.rend() && top < 10; ++it, ++top)

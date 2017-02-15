@@ -52,13 +52,16 @@ int main()
     EventManager::getInstance().addListener(evListener3);
     EventManager::getInstance().addListener(evListener3); // duplicate
     EventManager::getInstance().publishEvent(ev);
-    EventManager::getInstance().removeListener(evListener3);
     std::cout << "------------------------------------------------------" << endl;
+    EventManager::getInstance().removeListener(evListener3);
     EventManager::getInstance().publishEvent(ev);
+    std::cout << "------------------------------------------------------" << endl;
+    {
     shared_ptr<EventListener> evListener4 = make_shared<FileLogger>();
     EventManager::getInstance().addListener(evListener4);
     EventManager::getInstance().publishEvent(ev);
-    EventManager::getInstance().publishEvent(Event("File"));
-
+    }
+    std::cout << "------------------------------------------------------" << endl;
+    EventManager::getInstance().publishEvent(ev);
     return 0;
 }

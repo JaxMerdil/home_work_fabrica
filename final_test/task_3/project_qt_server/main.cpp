@@ -7,18 +7,22 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+    cout << "Enter!" << endl;
+
     QCoreApplication app(argc, argv);
 
     Server s;
 
     QThread th1;
     s.moveToThread(&th1);
-    s.connect(&th1, SIGNAL(started()), &s, SLOT(start()));
+    s.connect(&th1, SIGNAL(started()), &s, SLOT(Start()));
     th1.start();
-    s.connect(&s, &Server::dataRead, [](int size)
-    {
 
-        qDebug() << "Data read: " << size;
-    });
+    s.connect(&s, &Server::DataRead, [](int size)
+                                    {
+
+                                        qDebug() << "Data read: " << size;
+                                    });
+
     return app.exec();
 }

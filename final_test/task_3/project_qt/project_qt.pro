@@ -6,11 +6,7 @@ CONFIG += qt
 QT += network core
 
 SOURCES += main.cpp \
-    client.cpp \
-    a.cpp \
-    worker.cpp
+    client.cpp
 
 HEADERS += \
-    client.h \
-    a.h \
-    worker.h
+    client.h

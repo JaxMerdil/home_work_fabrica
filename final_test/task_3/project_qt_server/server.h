@@ -12,14 +12,13 @@ public:
     ~Server();
 
 signals:
-    void runWorker( QTcpSocket *socket );
-    void dataRead(int);
+    void DataRead(int);
 
 public slots:
-    void start();
-    void onNewConnection();
-    void onBytesWritten(qint64 bytes);
-    void onReadyRead();
+    void Start();
+    void OnNewConnection();
+    void OnBytesWritten(qint64 bytes);
+    void OnReadyRead();
 
 private:
     QTcpServer* m_server;

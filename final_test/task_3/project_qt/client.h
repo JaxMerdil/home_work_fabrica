@@ -4,28 +4,28 @@
 #include <QObject>
 #include <QTcpSocket>
 
-class SimpleClient : public QObject
+class Client : public QObject
 {
     Q_OBJECT
 public:
-    explicit SimpleClient(QObject *parent = 0);
-    ~SimpleClient();
+    explicit Client(QObject *parent = 0);
+    ~Client();
 
     void Connect();
 
-    void setValue(int newValue);
-    void writeSocketPackage();
-    void parameterThroughputAndLtency(QByteArray byte);
+    void SetValue(int newValue);
+    void WriteSocketPackage();
+    void ParameterThroughputAndLtency(QByteArray byte);
 signals:
 
-    void valueSet(int);
+    void ValueSet(int);
 
 public slots:
 
-    void onConnected();
-    void onDisconnected();
-    void onBytesWritten(qint64 bytes);
-    void onReadyRead();
+    void OnConnected();
+    void OnDisconnected();
+    void OnBytesWritten(qint64 bytes);
+    void OnReadyRead();
 
 private:
 

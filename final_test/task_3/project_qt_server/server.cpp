@@ -13,9 +13,9 @@ Server::~Server()
     delete m_server;
 }
 
-void Server::start()
+void Server::Start()
 {
-    connect(m_server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+    connect(m_server, SIGNAL(newConnection()), this, SLOT(OnNewConnection()));
 
     if(!m_server->listen(QHostAddress::Any, 9999))
     {
@@ -27,16 +27,16 @@ void Server::start()
     }
 }
 
-void Server::onNewConnection()
+void Server::OnNewConnection()
 {
     qDebug() << "Connected (server)!";
 
     QTcpSocket *socket = m_server->nextPendingConnection();
 
-    connect(socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
 }
 
-void Server::onBytesWritten(qint64 bytes)
+void Server::OnBytesWritten(qint64 bytes)
 {
     qDebug() << "We wrote: " << bytes << " bytes";
 
@@ -45,15 +45,17 @@ void Server::onBytesWritten(qint64 bytes)
 }
 
 
-void Server::onReadyRead()
+void Server::OnReadyRead()
 {
     QTcpSocket* socket = static_cast<QTcpSocket*>(sender());
 
     QByteArray data = socket->readAll();
     //    QString s_data = QString::fromUtf8(data.data());
-    qDebug() << "Size data: " << data.size() << endl;
+
+    qDebug() << "Read: " << data.size() << endl;
     //    qDebug() << "Data: " << s_data << endl;
     //    connect(socket, SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWritten(qint64)));
+
     socket->write(data);
-    emit dataRead(data.size());
+    emit DataRead(data.size());
 }

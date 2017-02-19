@@ -4,35 +4,33 @@
 #include <cstring>
 #include <iomanip>
 
-
-SimpleClient::SimpleClient(QObject *parent)
+Client::Client(QObject *parent)
     : QObject(parent)
     , m_socket(new QTcpSocket(this))
 {
-    connect(m_socket, SIGNAL(connected()),          this, SLOT(onConnected()));
-    connect(m_socket, SIGNAL(disconnected()),       this, SLOT(onDisconnected()));
-    connect(m_socket, SIGNAL(readyRead()),          this, SLOT(onReadyRead()));
-    connect(m_socket, SIGNAL(bytesWritten(qint64)), this, SLOT(onBytesWritten(qint64)));
+    connect(m_socket, SIGNAL(connected()),          this, SLOT(OnConnected()));
+    connect(m_socket, SIGNAL(disconnected()),       this, SLOT(OnDisconnected()));
+    connect(m_socket, SIGNAL(readyRead()),          this, SLOT(OnReadyRead()));
+    connect(m_socket, SIGNAL(bytesWritten(qint64)), this, SLOT(OnBytesWritten(qint64)));
 }
 
-SimpleClient::~SimpleClient()
+Client::~Client()
 {
     delete m_socket;
 }
 
-void SimpleClient::Connect()
+void Client::Connect()
 {
     m_socket->connectToHost("127.0.0.1", 9999);
-    m_socket->abort();
 }
 
-void SimpleClient::setValue(int newValue)
+void Client::SetValue(int newValue)
 {
     m_value = newValue;
-    emit valueSet(m_value);
+    emit ValueSet(m_value);
 }
 
-void SimpleClient::writeSocketPackage()
+void Client::WriteSocketPackage()
 {
     const int size = 20;
     char m_package[size]="PACKAGE";
@@ -55,7 +53,7 @@ void SimpleClient::writeSocketPackage()
     m_socket->write(str);
 }
 
-void SimpleClient::parameterThroughputAndLtency(QByteArray byte)
+void Client::ParameterThroughputAndLtency(QByteArray byte)
 {
     std::string DataOld = "";
     for(int i = atoll(std::strstr(byte,"PACKAGE"))+1; i < byte.length(); ++i)
@@ -69,32 +67,32 @@ void SimpleClient::parameterThroughputAndLtency(QByteArray byte)
     if(m_latency > 1000)
     {
         m_throughput = m_nByte / m_latency;
-        qDebug() << "Throughput: " << m_throughput/8000 << "Mbit/s" << " | " << "Latency "<< m_latency << "m";
+        qDebug() << "Throughput: " << (m_throughput*8)/1000 << "Mbit/s" << " | " << "Latency "<< m_latency << "m";
         m_latency = 0;
         m_nByte = 0;
     }
 }
-void SimpleClient::onConnected()
+
+void Client::OnConnected()
 {
     //    qDebug() << "Connected (client)!";
-    writeSocketPackage();
-    //    qDebug() << "Written!";
+       WriteSocketPackage();
+       //    qDebug() << "Written!";
 }
 
-void SimpleClient::onDisconnected()
+void Client::OnDisconnected()
 {
-    //    qDebug() << "Disconnected!";
+//    qDebug() << "Disconnected!";
 }
 
-void SimpleClient::onBytesWritten(qint64 bytes)
+void Client::OnBytesWritten(qint64 bytes)
 {
-//        qDebug() << "We wrote: " << bytes << " bytes";
+//    qDebug() << "We wrote: " << bytes << " bytes";
 }
 
-void SimpleClient::onReadyRead()
+void Client::OnReadyRead()
 {
     QByteArray byte = m_socket->readAll();
-    parameterThroughputAndLtency(byte);
-    onConnected();
-
+        ParameterThroughputAndLtency(byte);
+        OnConnected();
 }
